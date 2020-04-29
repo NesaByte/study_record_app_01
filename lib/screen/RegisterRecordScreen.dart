@@ -7,6 +7,24 @@ class RegisterRecordScreen extends StatefulWidget {
 }
 
 class _State extends State<RegisterRecordScreen> {
+  final _fromDateController = TextEditingController();
+  final _fromTimeController = TextEditingController();
+  final _toDateController = TextEditingController();
+  final _toTimeController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _kindController = TextEditingController();
+
+  @override
+  void dispose() {
+    _fromDateController.dispose();
+    _fromTimeController.dispose();
+    _toDateController.dispose();
+    _toTimeController.dispose();
+    _titleController.dispose();
+    _kindController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +46,7 @@ class _State extends State<RegisterRecordScreen> {
                       Expanded(
                         flex: 1,
                         child: TextField(
+                          controller: _fromDateController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -40,6 +59,7 @@ class _State extends State<RegisterRecordScreen> {
                       Expanded(
                         flex: 1,
                         child: TextField(
+                          controller: _fromTimeController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -57,6 +77,7 @@ class _State extends State<RegisterRecordScreen> {
                       Expanded(
                         flex: 1,
                         child: TextField(
+                          controller: _toDateController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -69,6 +90,7 @@ class _State extends State<RegisterRecordScreen> {
                       Expanded(
                         flex: 1,
                         child: TextField(
+                          controller: _toTimeController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -82,6 +104,7 @@ class _State extends State<RegisterRecordScreen> {
                   ),
                   Text('Title'),
                   TextField(
+                    controller: _titleController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
@@ -92,6 +115,7 @@ class _State extends State<RegisterRecordScreen> {
                   ),
                   Text('Kind'),
                   TextField(
+                    controller: _kindController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
@@ -152,7 +176,13 @@ class _State extends State<RegisterRecordScreen> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       onPressed: () {
-                        // TODO: confirm & register
+                        print(
+                          "from date :" + _fromDateController.text
+                          + "/ from time : " + _fromTimeController.text
+                          + "/ to date : " + _toDateController.text
+                          + "/ to time : " + _toTimeController.text
+                          + "/ title : " + _titleController.text
+                        );
                         Navigator.pop(context);
                       },
                     ),

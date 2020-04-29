@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_record_app_01/screen/RegisterRecordScreen.dart';
 
 class RecordListScreen extends StatefulWidget {
   RecordListScreen({Key key, this.date}) : super(key: key);
@@ -57,7 +58,15 @@ class _State extends State<RecordListScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         tooltip: 'Register',
-        onPressed: () => print('Click Register Button...'), // TODO: dummy
+        onPressed: () {
+          print('Click Button for natigating Register Page...');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RegisterRecordScreen()
+            )
+          );
+        },
       ),
     );
   }

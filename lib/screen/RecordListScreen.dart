@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:study_record_app_01/screen/RegisterRecordScreen.dart';
 
 class RecordListScreen extends StatefulWidget {
-  RecordListScreen({Key key, this.date}) : super(key: key);
+  RecordListScreen({Key key, this.datetime}) : super(key: key);
 
-  final String date;
+  final DateTime datetime;
 
   @override
   _State createState() => _State();
@@ -13,9 +14,11 @@ class RecordListScreen extends StatefulWidget {
 class _State extends State<RecordListScreen> {
   @override
   Widget build(BuildContext context) {
+    String _formatted = DateFormat('yyyy/MM/dd EEEE', "en_US").format(widget.datetime);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.date),
+        title: Text(_formatted),
       ),
       drawer: Drawer(),
       body: Center(

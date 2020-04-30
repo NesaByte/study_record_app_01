@@ -83,7 +83,7 @@ class _State extends State<RecordListScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => RegisterRecordScreen()
+            builder: (context) => RegisterRecordScreen(initialDate: DateFormat('yyyyMMdd', "ja_JP").format(widget.datetime))
           ),
         );
       },
@@ -92,7 +92,7 @@ class _State extends State<RecordListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String _formatted = DateFormat('yyyy/MM/dd EEEE', "en_US").format(widget.datetime);
+    String _formatted = DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(widget.datetime);
 
     return Scaffold(
       appBar: AppBar(

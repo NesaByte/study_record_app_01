@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class RegisterRecordScreen extends StatefulWidget {
+  RegisterRecordScreen({Key key, this.initialDate}) : super(key: key);
+
+  final String initialDate;
 
   @override
   _State createState() => _State();
@@ -13,6 +16,13 @@ class _State extends State<RegisterRecordScreen> {
   final _toTimeController = TextEditingController();
   final _titleController = TextEditingController();
   final _kindController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _fromDateController.text= widget.initialDate;
+    _toDateController.text = widget.initialDate;
+  }
 
   @override
   void dispose() {

@@ -13,7 +13,7 @@ class RecordListScreen extends StatefulWidget {
 }
 
 class _State extends State<RecordListScreen> {
-  final _list = [
+  final _testDataList = [
     Record(
       title: 'Ruby on Rails',
       kind: 'Programming',
@@ -49,6 +49,31 @@ class _State extends State<RecordListScreen> {
     return (elaspedHour + (elaspedMinute / 60)).toStringAsPrecision(3) + "h";
   }
 
+  Widget _buildRecordComponent(Record _record) {
+    return ListTile(
+      leading: Icon(
+        IconData(
+          _record.iconCodePoint,
+          fontFamily: _record.iconFontFamily
+        )
+      ),
+      title: Text(_record.title),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(_record.kind),
+          Text(createFormattedDatetime(createDatetimeFromString(_record.fromDate)) + " ~ " + createFormattedDatetime(createDatetimeFromString(_record.toDate))),
+        ],
+      ),
+      trailing: Text(createFormattedElaspedTime(_record.fromDate,_record.toDate)),
+    );
+  }
+
+  Widget _wrapCommonContainer(Widget _widget) => Container(
+    padding: EdgeInsets.all(8.0),
+    child: _widget,
+  );
+
   @override
   Widget build(BuildContext context) {
     String _formatted = DateFormat('yyyy/MM/dd EEEE', "en_US").format(widget.datetime);
@@ -62,46 +87,8 @@ class _State extends State<RecordListScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Icon(
-                  IconData(
-                    _list[0].iconCodePoint,
-                    fontFamily: _list[0].iconFontFamily
-                  )
-                ),
-                title: Text(_list[0].title),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(_list[0].kind),
-                    Text(createFormattedDatetime(createDatetimeFromString(_list[0].fromDate)) + " ~ " + createFormattedDatetime(createDatetimeFromString(_list[0].toDate))),
-                  ],
-                ),
-                trailing: Text(createFormattedElaspedTime(_list[0].fromDate,_list[0].toDate)),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(12.0),
-              child: ListTile(
-                leading: Icon(
-                  IconData(
-                    _list[1].iconCodePoint,
-                    fontFamily: _list[0].iconFontFamily
-                  )
-                ),
-                title: Text(_list[1].title),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(_list[1].kind),
-                    Text(createFormattedDatetime(createDatetimeFromString(_list[1].fromDate)) + " ~ " + createFormattedDatetime(createDatetimeFromString(_list[1].toDate))),
-                  ],
-                ),
-                trailing: Text(createFormattedElaspedTime(_list[1].fromDate,_list[1].toDate)),
-              ),
-            )
+            _wrapCommonContainer(_buildRecordComponent(_testDataList[0])),
+            _wrapCommonContainer(_buildRecordComponent(_testDataList[1])),
           ],
         ),
       ),

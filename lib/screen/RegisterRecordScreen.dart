@@ -35,6 +35,183 @@ class _State extends State<RegisterRecordScreen> {
     super.dispose();
   }
 
+  Widget _buildFromDatetimeRow() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text('From'),
+        ),
+        Expanded(
+          flex: 3,
+          child: TextField(
+            controller: _fromDateController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(),
+              ),
+              hintText: 'YYYYMMDD'
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: TextField(
+            controller: _fromTimeController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(),
+              ),
+              hintText: 'hh24mi'
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildToDatetimeRow() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text('To'),
+        ),
+        Expanded(
+          flex: 3,
+          child: TextField(
+            controller: _toDateController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(),
+              ),
+              hintText: 'YYYYMMDD'
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: TextField(
+            controller: _toTimeController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(),
+              ),
+              hintText: 'hh24mi'
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildTitleRow() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text('Title'),
+        ),
+        Expanded(
+          flex: 6,
+          child: TextField(
+            controller: _titleController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(),
+              ),
+              hintText: ''
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildKindRow() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text('Kind'),
+        ),
+        Expanded(
+          flex: 6,
+          child: TextField(
+            controller: _kindController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(),
+              ),
+              hintText: ''
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildIconRow() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text('Icon'),
+        ),
+        Expanded(
+          flex: 3,
+          child: Column(
+            children: <Widget>[
+              Icon(Icons.computer),
+              Radio(
+                value: '',
+                groupValue: null,
+                onChanged: null,
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Column(
+            children: <Widget>[
+              Icon(Icons.book),
+              Radio(
+                value: '',
+                groupValue: null,
+                onChanged: null,
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Column(
+            children: <Widget>[
+              Icon(Icons.free_breakfast),
+              Radio(
+                value: '',
+                groupValue: null,
+                onChanged: null,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _wrapCommonContainer(Widget _widget) => Container(
+    padding: EdgeInsets.all(8.0),
+    child: _widget,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,134 +227,11 @@ class _State extends State<RegisterRecordScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('From'),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: TextField(
-                          controller: _fromDateController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(),
-                            ),
-                            hintText: 'YYYYMMDD'
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: TextField(
-                          controller: _fromTimeController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(),
-                            ),
-                            hintText: 'hh24mi'
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Text('To'),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: TextField(
-                          controller: _toDateController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(),
-                            ),
-                            hintText: 'YYYYMMDD'
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: TextField(
-                          controller: _toTimeController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(),
-                            ),
-                            hintText: 'hh24mi'
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Text('Title'),
-                  TextField(
-                    controller: _titleController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(),
-                      ),
-                      hintText: ''
-                    ),
-                  ),
-                  Text('Kind'),
-                  TextField(
-                    controller: _kindController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(),
-                      ),
-                      hintText: ''
-                    ),
-                  ),
-                  Text('Icon'),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: <Widget>[
-                            Icon(Icons.thumb_up),
-                            Radio(
-                              value: '',
-                              groupValue: null,
-                              onChanged: null,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: <Widget>[
-                            Icon(Icons.thumb_up),
-                            Radio(
-                              value: '',
-                              groupValue: null,
-                              onChanged: null,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: <Widget>[
-                            Icon(Icons.thumb_up),
-                            Radio(
-                              value: '',
-                              groupValue: null,
-                              onChanged: null,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  _wrapCommonContainer(_buildFromDatetimeRow()),
+                  _wrapCommonContainer(_buildToDatetimeRow()),
+                  _wrapCommonContainer(_buildTitleRow()),
+                  _wrapCommonContainer(_buildKindRow()),
+                  _wrapCommonContainer(_buildIconRow()),
                   Center(
                     child: RaisedButton(
                       child: Icon(Icons.navigate_next),

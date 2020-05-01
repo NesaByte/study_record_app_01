@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:study_record_app_01/core/DatabaseHelper.dart';
 import 'package:study_record_app_01/model/Record.dart';
 import 'package:study_record_app_01/repository/RecordRepository.dart';
 import 'package:study_record_app_01/screen/RegisterRecordScreen.dart';
@@ -16,35 +14,13 @@ class RecordListScreen extends StatefulWidget {
 }
 
 class _State extends State<RecordListScreen> {
-  final _testDataList = [
-    Record(
-      id: 1,
-      title: 'Ruby on Rails',
-      kind: 'Programming',
-      iconCodePoint: Icons.computer.codePoint,
-      iconFontFamily: Icons.computer.fontFamily,
-      fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "090000",
-      toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "104500",
-      version: 0
-    ),
-    Record(
-      id: 2,
-      title: '初めてのGraphQL',
-      kind: 'Reading',
-      iconCodePoint: Icons.book.codePoint,
-      iconFontFamily: Icons.book.fontFamily,
-      fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "124500",
-      toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "151500",
-      version: 0
-    ),
-  ];
-
   @override
   void initState() {
     testRepository(); // test
     super.initState();
   }
 
+  // for test
   void testRepository() async {
     await RecordRepository.test();
     print(await RecordRepository.selectAll());
@@ -116,12 +92,20 @@ class _State extends State<RecordListScreen> {
       ),
       drawer: Drawer(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            _wrapCommonContainer(_buildRecordComponent(_testDataList[0])),
-            _wrapCommonContainer(_buildRecordComponent(_testDataList[1])),
-          ],
+        child: FutureBuilder<List<Record>>(
+          future: RecordRepository.selectAll(),
+          builder: (context, future) {
+            if (!future.hasData) {
+              return CircularProgressIndicator();
+            }
+            
+            List<Widget> widgetList = [];
+            future.data.forEach((dto) => widgetList.add(_wrapCommonContainer(_buildRecordComponent(dto))));
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: widgetList
+            );
+          },
         ),
       ),
       floatingActionButton: _buildFloatingActionButton(context)

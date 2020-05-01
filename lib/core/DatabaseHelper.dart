@@ -8,6 +8,8 @@ class DatabaseHelper {
   static final _dbName = 'study_record_one_db.db';
   static final _dbVersion = 1;
 
+  static final tableNameRecord = 'RECORD';
+
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
@@ -21,6 +23,7 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, _dbName);
+    // await deleteDatabase(path);
     return await openDatabase(
       path,
       version: _dbVersion,
@@ -30,7 +33,7 @@ class DatabaseHelper {
 
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE RECORD (
+      CREATE TABLE $tableNameRecord (
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         kind TEXT NOT NULL,
@@ -39,7 +42,7 @@ class DatabaseHelper {
         fromDate TEXT NOT NULL,
         toDate TEXT NOT NULL,
         version INTEGER NOT NULL
-      )
+      );
     ''');
   }
 }

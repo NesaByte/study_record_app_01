@@ -17,6 +17,7 @@ class _State extends State<RegisterRecordScreen> {
   String _toTime;
   String _title;
   String _kind;
+  IconData _iconData;
 
   @override
   void initState() {
@@ -249,7 +250,11 @@ class _State extends State<RegisterRecordScreen> {
                 _wrapCommonContainer(_buildToDatetimeRow()),
                 _wrapCommonContainer(_buildTitleRow()),
                 _wrapCommonContainer(_buildKindRow()),
-                _wrapCommonContainer(_buildIconRow()),
+                // _wrapCommonContainer(_buildIconRow()),
+                _wrapCommonContainer(RadioFormField(
+                  choice: [Icons.computer, Icons.book, Icons.free_breakfast],
+                  onSaved: (value) => setState(() => _iconData = value),
+                )),
                 Center(
                   child: RaisedButton(
                     child: Icon(Icons.navigate_next),
@@ -266,6 +271,7 @@ class _State extends State<RegisterRecordScreen> {
                               + " / to time : " + _toTime
                               + " / title : " + _title
                               + " / kind : " + _kind
+                              + " / iconData codePoint : " + _iconData.codePoint.toString()
                       );
                       Navigator.pop(context);
                     },
@@ -278,4 +284,44 @@ class _State extends State<RegisterRecordScreen> {
       )
     );
   }
+}
+
+class RadioFormField extends FormField<IconData> {
+  RadioFormField(
+    {FormFieldSetter<IconData> onSaved,
+    FormFieldValidator<IconData> validator,
+    IconData initialValue,
+    bool autovalidate = false,
+    List<IconData> choice,
+    })
+      : super(
+        onSaved: onSaved,
+        validator: validator,
+        initialValue: initialValue,
+        autovalidate: autovalidate,
+        builder: (FormFieldState<IconData> state) {
+          List<Widget> widgets = [];
+          widgets.add(Expanded(flex: 1, child: Text('Icon')));
+          choice.forEach((iconData) => widgets.add(Expanded(
+            flex: 3,
+            child: Column(
+              children: <Widget>[
+                Icon(iconData),
+                Radio(
+                  value: iconData,
+                  groupValue: state.value,
+                  onChanged: (value) {
+                    state.didChange(value);
+                    // print(IconData(state.value.codePoint, fontFamily: state.value.fontFamily));
+                  },
+                )
+              ],
+            ),
+          )));
+
+          return Row(
+            children: widgets,
+          );
+        }
+      );
 }

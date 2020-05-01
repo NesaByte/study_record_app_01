@@ -17,6 +17,7 @@ class RecordListScreen extends StatefulWidget {
 class _State extends State<RecordListScreen> {
   final _testDataList = [
     Record(
+      id: 1,
       title: 'Ruby on Rails',
       kind: 'Programming',
       iconCodePoint: Icons.computer.codePoint,
@@ -26,6 +27,7 @@ class _State extends State<RecordListScreen> {
       version: 0
     ),
     Record(
+      id: 2,
       title: '初めてのGraphQL',
       kind: 'Reading',
       iconCodePoint: Icons.book.codePoint,

@@ -10,6 +10,7 @@ Record recordFromJson(String str) => Record.fromJson(json.decode(str));
 String recordToJson(Record data) => json.encode(data.toJson());
 
 class Record {
+  int id;
   String title;
   String kind;
   int iconCodePoint;
@@ -19,6 +20,7 @@ class Record {
   int version;
 
   Record({
+    @required this.id,
     @required this.title,
     @required this.kind,
     @required this.iconCodePoint,
@@ -29,6 +31,7 @@ class Record {
   });
 
   factory Record.fromJson(Map<String, dynamic> json) => Record(
+    id: json["id"],
     title: json["title"],
     kind: json["kind"],
     iconCodePoint: json["iconCodePoint"],
@@ -39,6 +42,7 @@ class Record {
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "title": title,
     "kind": kind,
     "iconCodePoint": iconCodePoint,

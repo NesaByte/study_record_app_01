@@ -10,6 +10,8 @@ class RegisterRecordScreen extends StatefulWidget {
 }
 
 class _State extends State<RegisterRecordScreen> {
+  final _formKey = new GlobalKey<FormState>();
+
   final _fromDateController = TextEditingController();
   final _fromTimeController = TextEditingController();
   final _toDateController = TextEditingController();
@@ -219,44 +221,43 @@ class _State extends State<RegisterRecordScreen> {
         title: Text('予定追加'),
       ),
       body: Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(2.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _wrapCommonContainer(_buildFromDatetimeRow()),
-                  _wrapCommonContainer(_buildToDatetimeRow()),
-                  _wrapCommonContainer(_buildTitleRow()),
-                  _wrapCommonContainer(_buildKindRow()),
-                  _wrapCommonContainer(_buildIconRow()),
-                  Center(
-                    child: RaisedButton(
-                      child: Icon(Icons.navigate_next),
-                      color: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      onPressed: () {
-                        print(
-                          "from date :" + _fromDateController.text
-                          + "/ from time : " + _fromTimeController.text
-                          + "/ to date : " + _toDateController.text
-                          + "/ to time : " + _toTimeController.text
-                          + "/ title : " + _titleController.text
-                        );
-                        Navigator.pop(context);
-                      },
+        child: Container(
+          padding: EdgeInsets.all(2.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _wrapCommonContainer(_buildFromDatetimeRow()),
+                _wrapCommonContainer(_buildToDatetimeRow()),
+                _wrapCommonContainer(_buildTitleRow()),
+                _wrapCommonContainer(_buildKindRow()),
+                _wrapCommonContainer(_buildIconRow()),
+                Center(
+                  child: RaisedButton(
+                    child: Icon(Icons.navigate_next),
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
+                    onPressed: () {
+                      print(
+                          "from date :" + _fromDateController.text
+                              + "/ from time : " + _fromTimeController.text
+                              + "/ to date : " + _toDateController.text
+                              + "/ to time : " + _toTimeController.text
+                              + "/ title : " + _titleController.text
+                      );
+                      Navigator.pop(context);
+                    },
                   ),
-                ],
-              ),
-            )
-          ],
+                ),
+              ]
+            ),
+          ),
         ),
-      ),
+      )
     );
   }
 }

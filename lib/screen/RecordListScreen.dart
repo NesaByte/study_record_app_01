@@ -41,6 +41,12 @@ class _State extends State<RecordListScreen> {
     return (elaspedHour + (elaspedMinute / 60)).toStringAsPrecision(3) + "h";
   }
 
+  List<Widget> _buildRecordList(List<Record> list) {
+    List<Widget> widgetList = [];
+    list.forEach((dto) => widgetList.add(_wrapCommonContainer(_buildRecordComponent(dto))));
+    return widgetList;
+  }
+
   Widget _buildRecordComponent(Record _record) {
     return ListTile(
       leading: Icon(
@@ -66,6 +72,12 @@ class _State extends State<RecordListScreen> {
     child: _widget,
   );
 
+  Widget _buildAppBar(final DateTime datetime) {
+    return AppBar(
+      title: Text(DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(widget.datetime)),
+    );
+  }
+
   Widget _buildFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
       child: Icon(Icons.add),
@@ -84,12 +96,8 @@ class _State extends State<RecordListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String _formatted = DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(widget.datetime);
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_formatted),
-      ),
+      appBar: _buildAppBar(widget.datetime),
       drawer: Drawer(),
       body: Center(
         child: FutureBuilder<List<Record>>(
@@ -98,12 +106,9 @@ class _State extends State<RecordListScreen> {
             if (!future.hasData) {
               return CircularProgressIndicator();
             }
-            
-            List<Widget> widgetList = [];
-            future.data.forEach((dto) => widgetList.add(_wrapCommonContainer(_buildRecordComponent(dto))));
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: widgetList
+              children: _buildRecordList(future.data)
             );
           },
         ),

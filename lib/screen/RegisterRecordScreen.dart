@@ -228,10 +228,80 @@ class _State extends State<RegisterRecordScreen> {
     );
   }
 
+  Widget _buildSubmitButton() {
+    void _submit() async {
+      _formKey.currentState.save();
+      final int recentId = (await RecordRepository.selectAll()).length;
+      final dto = Record(
+        id: recentId + 1,
+        title: _title,
+        kind: _kind,
+        iconCodePoint: _iconData.codePoint,
+        iconFontFamily: _iconData.fontFamily,
+        fromDate: _fromDate + _fromTime,
+        toDate: _toDate + _toTime,
+        version: 1
+      );
+      // print(model.toJson());
+      await RecordRepository.insert(dto);
+      Navigator.pop(context);
+    }
+
+    return RaisedButton(
+      child: Icon(Icons.navigate_next),
+      color: Colors.blue,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      onPressed: _submit
+    );
+  }
+
   Widget _wrapCommonContainer(Widget _widget) => Container(
     padding: EdgeInsets.all(8.0),
     child: _widget,
   );
+
+
+  Widget _buildTestButton() {
+    void _submit() async {
+      /*
+      setState(() {
+        _fromTime = '1445';
+        _toTime = '1630';
+        _title = 'PC購入';
+        _kind = 'Shopping';
+        _iconData = Icons.free_breakfast;
+      });
+       */
+      _formKey.currentState.save();
+      final int recentId = (await RecordRepository.selectAll()).length;
+      final dto = Record(
+        id: recentId + 1,
+        title: 'PC購入',
+        kind: 'Shopping',
+        iconCodePoint: Icons.free_breakfast.codePoint,
+        iconFontFamily: Icons.free_breakfast.fontFamily,
+        fromDate: _fromDate + '1445',
+        toDate: _toDate + '1630',
+        version: 1
+      );
+      // print(model.toJson());
+      await RecordRepository.insert(dto);
+      Navigator.pop(context);
+
+
+    }
+
+    return RaisedButton(
+        child: Text('TEST'),
+        color: Colors.grey,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        onPressed: _submit
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -258,30 +328,10 @@ class _State extends State<RegisterRecordScreen> {
                   onSaved: (value) => setState(() => _iconData = value),
                 )),
                 Center(
-                  child: RaisedButton(
-                    child: Icon(Icons.navigate_next),
-                    color: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    onPressed: () async {
-                      _formKey.currentState.save();
-                      final int recentId = (await RecordRepository.selectAll()).length;
-                      final dto = Record(
-                        id: recentId + 1,
-                        title: _title,
-                        kind: _kind,
-                        iconCodePoint: _iconData.codePoint,
-                        iconFontFamily: _iconData.fontFamily,
-                        fromDate: _fromDate + _fromTime,
-                        toDate: _toDate + _toTime,
-                        version: 1
-                      );
-                      // print(model.toJson());
-                      await RecordRepository.insert(dto);
-                      Navigator.pop(context);
-                    },
-                  ),
+                  child: _wrapCommonContainer(_buildSubmitButton())
+                ),
+                Center(
+                  child: _wrapCommonContainer(_buildTestButton())
                 ),
               ]
             ),

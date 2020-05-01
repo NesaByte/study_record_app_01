@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:study_record_app_01/core/DatabaseHelper.dart';
 import 'package:study_record_app_01/model/Record.dart';
+import 'package:study_record_app_01/repository/RecordRepository.dart';
 import 'package:study_record_app_01/screen/RegisterRecordScreen.dart';
 
 class RecordListScreen extends StatefulWidget {
@@ -40,61 +41,13 @@ class _State extends State<RecordListScreen> {
 
   @override
   void initState() {
-    test();
+    testRepository(); // test
     super.initState();
   }
 
-  void test() async {
-    final dbHelper = DatabaseHelper.instance;
-    Database db = await dbHelper.getDatabase();
-    // print(await db.rawQuery(".tables"));
-    print(await db.rawQuery("select name from sqlite_master where type='table';"));
-    print(await db.query("sqlite_master", where: "type = ?", whereArgs: ["table"]));
-    await db.execute("DELETE FROM RECORD");
-    await db.execute('''
-      INSERT INTO RECORD(
-        id,
-        title,
-        kind,
-        iconCodePoint,
-        iconFontFamily,
-        fromDate,
-        toDate,
-        version
-      ) VALUES (
-        1,
-        "Ruby on Rails",
-        "Programming",
-        ${Icons.computer.codePoint},
-        "${Icons.computer.fontFamily}",
-        "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "090000"}",
-        "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "104500"}",
-        0
-      );
-    ''');
-    await db.execute('''
-      INSERT INTO RECORD(
-        id,
-        title,
-        kind,
-        iconCodePoint,
-        iconFontFamily,
-        fromDate,
-        toDate,
-        version
-      ) VALUES (
-        2,
-        "初めてのGraphQL",
-        "Reading",
-        ${Icons.book.codePoint},
-        "${Icons.book.fontFamily}",
-        "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "124500"}",
-        "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "151500"}",
-        0
-      );
-    ''');
-    List<Map<String, dynamic>> rows = await db.query(DatabaseHelper.tableNameRecord);
-    print(rows);
+  void testRepository() async {
+    await RecordRepository.test();
+    print(await RecordRepository.selectAll());
   }
 
   DateTime createDatetimeFromString(final String dateStr) {

@@ -11,30 +11,18 @@ class RegisterRecordScreen extends StatefulWidget {
 
 class _State extends State<RegisterRecordScreen> {
   final _formKey = new GlobalKey<FormState>();
-
-  final _fromDateController = TextEditingController();
-  final _fromTimeController = TextEditingController();
-  final _toDateController = TextEditingController();
-  final _toTimeController = TextEditingController();
-  final _titleController = TextEditingController();
-  final _kindController = TextEditingController();
+  String _fromDate;
+  String _fromTime;
+  String _toDate;
+  String _toTime;
+  String _title;
+  String _kind;
 
   @override
   void initState() {
     super.initState();
-    _fromDateController.text= widget.initialDate;
-    _toDateController.text = widget.initialDate;
-  }
-
-  @override
-  void dispose() {
-    _fromDateController.dispose();
-    _fromTimeController.dispose();
-    _toDateController.dispose();
-    _toTimeController.dispose();
-    _titleController.dispose();
-    _kindController.dispose();
-    super.dispose();
+    _fromDate = widget.initialDate;
+    _toDate = widget.initialDate;
   }
 
   Widget _buildFromDatetimeRow() {
@@ -46,8 +34,10 @@ class _State extends State<RegisterRecordScreen> {
         ),
         Expanded(
           flex: 3,
-          child: TextField(
-            controller: _fromDateController,
+          child: TextFormField(
+            maxLines: 1,
+            keyboardType: TextInputType.number,
+            autofocus: false,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -55,19 +45,27 @@ class _State extends State<RegisterRecordScreen> {
               ),
               hintText: 'YYYYMMDD'
             ),
-          ),
+            initialValue: _fromDate,
+            validator: (value) => value.isEmpty ? 'Can\'t be empty' : null,
+            onSaved: (value) => setState(() => _fromDate = value),
+          )
         ),
         Expanded(
           flex: 3,
-          child: TextField(
-            controller: _fromTimeController,
+          child: TextFormField(
+            maxLines: 1,
+            keyboardType: TextInputType.number,
+            autofocus: false,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
                 borderSide: BorderSide(),
               ),
-              hintText: 'hh24mi'
+              hintText: 'HHmm'
             ),
+            initialValue: _fromTime,
+            validator: (value) => value.isEmpty ? 'Can\'t be empty' : null,
+            onSaved: (value) => setState(() => _fromTime = value),
           ),
         ),
       ],
@@ -82,31 +80,41 @@ class _State extends State<RegisterRecordScreen> {
           child: Text('To'),
         ),
         Expanded(
-          flex: 3,
-          child: TextField(
-            controller: _toDateController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(),
+            flex: 3,
+            child: TextFormField(
+              maxLines: 1,
+              keyboardType: TextInputType.number,
+              autofocus: false,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(),
+                ),
+                hintText: 'YYYYMMDD'
               ),
-              hintText: 'YYYYMMDD'
-            ),
-          ),
+              initialValue: _toDate,
+              validator: (value) => value.isEmpty ? 'Can\'t be empty' : null,
+              onSaved: (value) => setState(() => _toDate = value),
+            )
         ),
         Expanded(
           flex: 3,
-          child: TextField(
-            controller: _toTimeController,
+          child: TextFormField(
+            maxLines: 1,
+            keyboardType: TextInputType.number,
+            autofocus: false,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
                 borderSide: BorderSide(),
               ),
-              hintText: 'hh24mi'
+              hintText: 'HHmm'
             ),
+            initialValue: _toTime,
+            validator: (value) => value.isEmpty ? 'Can\'t be empty' : null,
+            onSaved: (value) => setState(() => _toTime = value),
           ),
-        )
+        ),
       ],
     );
   }
@@ -120,8 +128,10 @@ class _State extends State<RegisterRecordScreen> {
         ),
         Expanded(
           flex: 6,
-          child: TextField(
-            controller: _titleController,
+          child: TextFormField(
+            maxLines: 1,
+            keyboardType: TextInputType.text,
+            autofocus: false,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -129,6 +139,8 @@ class _State extends State<RegisterRecordScreen> {
               ),
               hintText: ''
             ),
+            validator: (value) => value.isEmpty ? 'Can\'t be empty' : null,
+            onSaved: (value) => setState(() => _title = value),
           ),
         )
       ],
@@ -144,8 +156,10 @@ class _State extends State<RegisterRecordScreen> {
         ),
         Expanded(
           flex: 6,
-          child: TextField(
-            controller: _kindController,
+          child: TextFormField(
+            maxLines: 1,
+            keyboardType: TextInputType.text,
+            autofocus: false,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -153,6 +167,8 @@ class _State extends State<RegisterRecordScreen> {
               ),
               hintText: ''
             ),
+            validator: (value) => value.isEmpty ? 'Can\'t be empty' : null,
+            onSaved: (value) => setState(() => _kind = value),
           ),
         )
       ],
@@ -242,12 +258,14 @@ class _State extends State<RegisterRecordScreen> {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     onPressed: () {
+                      _formKey.currentState.save();
                       print(
-                          "from date :" + _fromDateController.text
-                              + "/ from time : " + _fromTimeController.text
-                              + "/ to date : " + _toDateController.text
-                              + "/ to time : " + _toTimeController.text
-                              + "/ title : " + _titleController.text
+                          "from date : " + _fromDate
+                              + " / from time : " + _fromTime
+                              + " / to date : " + _toDate
+                              + " / to time : " + _toTime
+                              + " / title : " + _title
+                              + " / kind : " + _kind
                       );
                       Navigator.pop(context);
                     },

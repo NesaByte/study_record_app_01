@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:study_record_app_01/model/Record.dart';
+import 'package:study_record_app_01/repository/RecordRepository.dart';
 
 class RegisterRecordScreen extends StatefulWidget {
   RegisterRecordScreen({Key key, this.initialDate}) : super(key: key);
@@ -262,17 +264,21 @@ class _State extends State<RegisterRecordScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       _formKey.currentState.save();
-                      print(
-                          "from date : " + _fromDate
-                              + " / from time : " + _fromTime
-                              + " / to date : " + _toDate
-                              + " / to time : " + _toTime
-                              + " / title : " + _title
-                              + " / kind : " + _kind
-                              + " / iconData codePoint : " + _iconData.codePoint.toString()
+                      final int recentId = (await RecordRepository.selectAll()).length;
+                      final dto = Record(
+                        id: recentId + 1,
+                        title: _title,
+                        kind: _kind,
+                        iconCodePoint: _iconData.codePoint,
+                        iconFontFamily: _iconData.fontFamily,
+                        fromDate: _fromDate + _fromTime,
+                        toDate: _toDate + _toTime,
+                        version: 1
                       );
+                      // print(model.toJson());
+                      await RecordRepository.insert(dto);
                       Navigator.pop(context);
                     },
                   ),

@@ -13,6 +13,13 @@ class RegisterRecordScreen extends StatefulWidget {
 
 class _State extends State<RegisterRecordScreen> {
   final _formKey = new GlobalKey<FormState>();
+  final _choice = [
+    Icons.computer,
+    Icons.book,
+    Icons.work,
+    Icons.free_breakfast
+  ];
+
   String _fromDate;
   String _fromTime;
   String _toDate;
@@ -178,56 +185,6 @@ class _State extends State<RegisterRecordScreen> {
     );
   }
 
-  Widget _buildIconRow() {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: Text('Icon'),
-        ),
-        Expanded(
-          flex: 3,
-          child: Column(
-            children: <Widget>[
-              Icon(Icons.computer),
-              Radio(
-                value: '',
-                groupValue: null,
-                onChanged: null,
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: Column(
-            children: <Widget>[
-              Icon(Icons.book),
-              Radio(
-                value: '',
-                groupValue: null,
-                onChanged: null,
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: Column(
-            children: <Widget>[
-              Icon(Icons.free_breakfast),
-              Radio(
-                value: '',
-                groupValue: null,
-                onChanged: null,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildSubmitButton() {
     void _submit() async {
       _formKey.currentState.save();
@@ -310,7 +267,7 @@ class _State extends State<RegisterRecordScreen> {
                 _wrapCommonContainer(_buildTitleRow()),
                 _wrapCommonContainer(_buildKindRow()),
                 _wrapCommonContainer(RadioFormField(
-                  choice: [Icons.computer, Icons.book, Icons.free_breakfast],
+                  choice: _choice,
                   onSaved: (value) => setState(() => _iconData = value),
                 )),
                 Center(
@@ -343,7 +300,17 @@ class RadioFormField extends FormField<IconData> {
         autovalidate: autovalidate,
         builder: (FormFieldState<IconData> state) {
           List<Widget> widgets = [];
-          widgets.add(Expanded(flex: 1, child: Text('Icon')));
+          widgets.add(
+            Expanded(
+              flex: 1,
+              child: Text(
+                'Icon',
+                style: TextStyle(
+                  fontSize: 12.0
+                ),
+              )
+            )
+          );
           choice.forEach((iconData) => widgets.add(Expanded(
             flex: 3,
             child: Column(

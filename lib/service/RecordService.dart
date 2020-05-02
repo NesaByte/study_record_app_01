@@ -5,7 +5,6 @@ class RecordService {
 
   static bool validate(final Record model) {
     try {
-      print(model.toJson());
       if (model.title == null) return false;
       if (model.kind == null) return false;
       if (model.iconCodePoint == null) return false;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:study_record_app_01/model/Record.dart';
-import 'package:study_record_app_01/repository/RecordRepository.dart';
+import 'package:study_record_app_01/service/RecordService.dart';
 
 class RegisterRecordScreen extends StatefulWidget {
   RegisterRecordScreen({Key key, this.initialDate}) : super(key: key);
@@ -193,7 +193,7 @@ class _State extends State<RegisterRecordScreen> {
     void _submit() async {
       if (!_formKey.currentState.validate()) return;
       _formKey.currentState.save();
-      final int recentId = (await RecordRepository.selectAll()).length;
+      final int recentId = (await RecordService.selectAll()).length;
       final dto = Record(
         id: recentId + 1,
         title: _title,
@@ -204,8 +204,12 @@ class _State extends State<RegisterRecordScreen> {
         toDate: _toDate + _toTime,
         version: 1
       );
-      await RecordRepository.insert(dto);
-      Navigator.pop(context);
+      await RecordService.insert(dto)
+        .then((value) {
+          Navigator.pop(context);
+        }).catchError((e) {
+          print(e);
+        });
     }
 
     return RaisedButton(
@@ -227,7 +231,7 @@ class _State extends State<RegisterRecordScreen> {
   Widget _buildTestButton() {
     void _submit() async {
       _formKey.currentState.save();
-      final int recentId = (await RecordRepository.selectAll()).length;
+      final int recentId = (await RecordService.selectAll()).length;
       final dto = Record(
         id: recentId + 1,
         title: 'PC購入',
@@ -238,8 +242,12 @@ class _State extends State<RegisterRecordScreen> {
         toDate: _toDate + '1630',
         version: 1
       );
-      await RecordRepository.insert(dto);
-      Navigator.pop(context);
+      await RecordService.insert(dto)
+        .then((value) {
+          Navigator.pop(context);
+        }).catchError((e) {
+          print(e);
+        });
     }
 
     return RaisedButton(

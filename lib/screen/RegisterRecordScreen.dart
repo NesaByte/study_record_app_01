@@ -187,6 +187,7 @@ class _State extends State<RegisterRecordScreen> {
 
   Widget _buildSubmitButton() {
     void _submit() async {
+      if (!_formKey.currentState.validate()) return;
       _formKey.currentState.save();
       final int recentId = (await RecordRepository.selectAll()).length;
       final dto = Record(
@@ -268,7 +269,9 @@ class _State extends State<RegisterRecordScreen> {
                 _wrapCommonContainer(_buildKindRow()),
                 _wrapCommonContainer(RadioFormField(
                   choice: _choice,
+                  initialValue: null,
                   onSaved: (value) => setState(() => _iconData = value),
+                  validator: (value) => (value == null) ? 'Can\'t be empty' : null,
                 )),
                 Center(
                   child: _wrapCommonContainer(_buildSubmitButton())
@@ -328,9 +331,21 @@ class RadioFormField extends FormField<IconData> {
             ),
           )));
 
-          return Row(
-            children: widgets,
-          );
+          if (state.hasError) {
+            return Column(
+              children: <Widget>[
+                Row(children: widgets),
+                Text(
+                  state.errorText,
+                  style: TextStyle(
+                    color: Colors.red[700]
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return Row(children: widgets);
+          }
         }
       );
 }

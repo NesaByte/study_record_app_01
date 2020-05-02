@@ -242,7 +242,6 @@ class _State extends State<RegisterRecordScreen> {
         toDate: _toDate + _toTime,
         version: 1
       );
-      // print(model.toJson());
       await RecordRepository.insert(dto);
       Navigator.pop(context);
     }
@@ -265,15 +264,6 @@ class _State extends State<RegisterRecordScreen> {
 
   Widget _buildTestButton() {
     void _submit() async {
-      /*
-      setState(() {
-        _fromTime = '1445';
-        _toTime = '1630';
-        _title = 'PC購入';
-        _kind = 'Shopping';
-        _iconData = Icons.free_breakfast;
-      });
-       */
       _formKey.currentState.save();
       final int recentId = (await RecordRepository.selectAll()).length;
       final dto = Record(
@@ -286,11 +276,8 @@ class _State extends State<RegisterRecordScreen> {
         toDate: _toDate + '1630',
         version: 1
       );
-      // print(model.toJson());
       await RecordRepository.insert(dto);
       Navigator.pop(context);
-
-
     }
 
     return RaisedButton(
@@ -322,7 +309,6 @@ class _State extends State<RegisterRecordScreen> {
                 _wrapCommonContainer(_buildToDatetimeRow()),
                 _wrapCommonContainer(_buildTitleRow()),
                 _wrapCommonContainer(_buildKindRow()),
-                // _wrapCommonContainer(_buildIconRow()),
                 _wrapCommonContainer(RadioFormField(
                   choice: [Icons.computer, Icons.book, Icons.free_breakfast],
                   onSaved: (value) => setState(() => _iconData = value),

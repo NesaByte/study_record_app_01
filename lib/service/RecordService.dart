@@ -5,14 +5,15 @@ class RecordService {
 
   static bool validate(final Record model) {
     try {
-      if (model.title != null) return false;
-      if (model.kind != null) return false;
-      if (model.iconCodePoint != null) return false;
-      if (model.iconFontFamily != null) return false;
+      print(model.toJson());
+      if (model.title == null) return false;
+      if (model.kind == null) return false;
+      if (model.iconCodePoint == null) return false;
+      if (model.iconFontFamily == null) return false;
       if (model.fromDate.length != 12) return false;
-      if (int.parse(model.fromDate) > 0) return false;
+      if (int.parse(model.fromDate) <= 0) return false;
       if (model.toDate.length != 12) return false;
-      if (int.parse(model.toDate) > 0) return false;
+      if (int.parse(model.toDate) <= 0) return false;
       return true;
     } catch (e) {
       print("Exception occured in RecordService#validate");

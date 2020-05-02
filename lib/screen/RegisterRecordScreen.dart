@@ -56,7 +56,11 @@ class _State extends State<RegisterRecordScreen> {
               hintText: 'YYYYMMDD'
             ),
             initialValue: _fromDate,
-            validator: (value) => value.isEmpty ? 'Can\'t be empty' : null,
+            validator: (value) {
+              if (value.isEmpty) return 'Can\'t be empty.';
+              // if (value.length != 8 || int.parse(value) >= 0) return 'Please just 8 digits & only half-width digit.';
+              return null;
+            },
             onSaved: (value) => setState(() => _fromDate = value),
           )
         ),

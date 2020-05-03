@@ -47,8 +47,8 @@ class App extends StatelessWidget {
         "Programming",
         ${Icons.computer.codePoint},
         "${Icons.computer.fontFamily}",
-        "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "090000"}",
-        "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "104500"}",
+        "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "0900"}",
+        "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1045"}",
         0
       );
     ''');

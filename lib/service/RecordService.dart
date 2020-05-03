@@ -31,8 +31,8 @@ class RecordService {
     List<Record> result = [];
     final List<Record> dtos = await selectAll();
     dtos.forEach((dto) {
-      int dtoFromDate = int.parse(dto.fromDate.substring(0, 9));
-      int dtoToDate = int.parse(dto.fromDate.substring(0, 9));
+      int dtoFromDate = int.parse(dto.fromDate.substring(0, 8));
+      int dtoToDate = int.parse(dto.fromDate.substring(0, 8));
       if (dtoFromDate <= basisDate && basisDate <= dtoToDate) {
         result.add(dto);
       }

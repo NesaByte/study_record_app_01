@@ -90,7 +90,7 @@ class _State extends State<RecordListScreen> {
       drawer: Drawer(),
       body: Center(
         child: FutureBuilder<List<Record>>(
-          future: RecordService.selectAll(),
+          future: RecordService.selectFixedFromDateRecords(int.parse(DateFormat('yyyyMMdd', "ja_JP").format(widget.datetime))),
           builder: (context, future) {
             if (!future.hasData) {
               return CircularProgressIndicator();

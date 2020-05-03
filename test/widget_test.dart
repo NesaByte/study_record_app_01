@@ -7,24 +7,50 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:study_record_app_01/main.dart';
+import 'package:study_record_app_01/screen/RecordListScreen.dart';
+import 'package:study_record_app_01/screen/RegisterRecordScreen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+
+  testWidgets('Test Launching...', (WidgetTester tester) async {
+    initializeDateFormatting();
+    final String _today = DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(DateTime.now());
+
     // Build our app and trigger a frame.
     await tester.pumpWidget(App());
+    expect(find.text(_today), findsOneWidget);
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  testWidgets('Test RecordListScreen', (WidgetTester tester) async {
+    initializeDateFormatting();
+    final String _today = DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(DateTime.now());
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.pumpWidget(MaterialApp(
+        title: 'Study Record',
+        theme: ThemeData(
+          primarySwatch: Colors.grey,
+        ),
+        home: RecordListScreen(datetime: DateTime.now())
+    ));
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text(_today), findsOneWidget);
+  });
+
+  testWidgets('Test RegisterRecordScreen', (WidgetTester tester) async {
+    initializeDateFormatting();
+    final String _today = DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now());
+
+    await tester.pumpWidget(MaterialApp(
+        title: 'Study Record',
+        theme: ThemeData(
+          primarySwatch: Colors.grey,
+        ),
+        home: RegisterRecordScreen(initialDate: _today)
+    ));
+
+    expect(find.text('予定追加'), findsOneWidget);
   });
 }

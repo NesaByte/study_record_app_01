@@ -112,18 +112,34 @@ class _State extends State<RecordListScreen> {
   }
 
   Widget _buildFloatingActionButton(BuildContext context) {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
-      tooltip: 'Register',
-      onPressed: () {
-        print('Click Button for natigating Register Page...');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RegisterRecordScreen(initialDate: DateFormat('yyyyMMdd', "ja_JP").format(widget.datetime))
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        FloatingActionButton(
+          heroTag: 'register',
+          child: Icon(Icons.add),
+          tooltip: 'Register',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RegisterRecordScreen(initialDate: DateFormat('yyyyMMdd', "ja_JP").format(widget.datetime))
+              ),
+            );
+          },
+        ),
+        FloatingActionButton(
+          heroTag: 'home',
+          tooltip: 'HOME',
+          child: Icon(Icons.home),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecordListScreen(datetime: DateTime.now()),
+            ),
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 }

@@ -61,9 +61,53 @@ class _State extends State<RecordListScreen> {
     child: _widget,
   );
 
-  Widget _buildAppBar(final DateTime datetime) {
+  Widget _buildAppBar(final BuildContext context, final DateTime datetime) {
     return AppBar(
       title: Text(DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(widget.datetime)),
+      leading: RaisedButton(
+        child: Icon(Icons.arrow_left),
+        color: Colors.grey,
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RecordListScreen(datetime: widget.datetime.add(Duration(days: -1)))
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        RaisedButton(
+          child: Icon(Icons.arrow_right),
+          color: Colors.grey,
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecordListScreen(datetime: widget.datetime.add(Duration(days: 1)))
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _buildAppBar(context, widget.datetime),
+      body: Center(
+        child: FutureBuilder<List<Record>>(
+          future: RecordService.selectFixedFromDateRecords(int.parse(DateFormat('yyyyMMdd', "ja_JP").format(widget.datetime))),
+          builder: (context, future) {
+            if (!future.hasData) {
+              return CircularProgressIndicator();
+            }
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: _buildRecordList(future.data)
+            );
+          },
+        ),
+      ),
+      floatingActionButton: _buildFloatingActionButton(context)
     );
   }
 
@@ -80,52 +124,6 @@ class _State extends State<RecordListScreen> {
           ),
         );
       },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(widget.datetime),
-      body: Center(
-        child: FutureBuilder<List<Record>>(
-          future: RecordService.selectFixedFromDateRecords(int.parse(DateFormat('yyyyMMdd', "ja_JP").format(widget.datetime))),
-          builder: (context, future) {
-            if (!future.hasData) {
-              return CircularProgressIndicator();
-            }
-
-            List<Widget> lists = _buildRecordList(future.data);
-            lists.add(Dismissible(
-              key: Key(DateFormat('yyyyMMdd', "ja_JP").format(widget.datetime)),
-              onDismissed: (direction) {
-                if (direction == DismissDirection.endToStart) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RecordListScreen(datetime: widget.datetime.add(Duration(days: 1)))
-                    ),
-                  );
-                } else if (direction == DismissDirection.startToEnd) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => RecordListScreen(datetime: widget.datetime.add(Duration(days: -1)))
-                    ),
-                  );
-                }
-              },
-              child: Text('Change basis date'),
-            ));
-
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: lists
-            );
-          },
-        ),
-      ),
-      floatingActionButton: _buildFloatingActionButton(context)
     );
   }
 }

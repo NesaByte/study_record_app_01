@@ -87,7 +87,6 @@ class _State extends State<RecordListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(widget.datetime),
-      drawer: Drawer(),
       body: Center(
         child: FutureBuilder<List<Record>>(
           future: RecordService.selectFixedFromDateRecords(int.parse(DateFormat('yyyyMMdd', "ja_JP").format(widget.datetime))),
@@ -95,9 +94,33 @@ class _State extends State<RecordListScreen> {
             if (!future.hasData) {
               return CircularProgressIndicator();
             }
+
+            List<Widget> lists = _buildRecordList(future.data);
+            lists.add(Dismissible(
+              key: Key(DateFormat('yyyyMMdd', "ja_JP").format(widget.datetime)),
+              onDismissed: (direction) {
+                if (direction == DismissDirection.endToStart) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RecordListScreen(datetime: widget.datetime.add(Duration(days: 1)))
+                    ),
+                  );
+                } else if (direction == DismissDirection.startToEnd) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RecordListScreen(datetime: widget.datetime.add(Duration(days: -1)))
+                    ),
+                  );
+                }
+              },
+              child: Text('Change basis date'),
+            ));
+
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: _buildRecordList(future.data)
+              children: lists
             );
           },
         ),

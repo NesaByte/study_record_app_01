@@ -22,6 +22,10 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(App());
     expect(find.text(_today), findsOneWidget);
+    expect(find.byIcon(Icons.arrow_left), findsOneWidget);
+    expect(find.byIcon(Icons.arrow_right), findsOneWidget);
+    expect(find.byIcon(Icons.add), findsOneWidget);
+    expect(find.byIcon(Icons.home), findsOneWidget);
   });
 
   testWidgets('Test RecordListScreen', (WidgetTester tester) async {
@@ -37,6 +41,10 @@ void main() {
     ));
 
     expect(find.text(_today), findsOneWidget);
+    expect(find.byIcon(Icons.arrow_left), findsOneWidget);
+    expect(find.byIcon(Icons.arrow_right), findsOneWidget);
+    expect(find.byIcon(Icons.add), findsOneWidget);
+    expect(find.byIcon(Icons.home), findsOneWidget);
   });
 
   testWidgets('Test RegisterRecordScreen', (WidgetTester tester) async {

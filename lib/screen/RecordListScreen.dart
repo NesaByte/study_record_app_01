@@ -130,8 +130,8 @@ class _State extends State<RecordListScreen> {
         ),
         FloatingActionButton(
           heroTag: 'home',
-          tooltip: 'HOME',
           child: Icon(Icons.home),
+          tooltip: 'HOME',
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(

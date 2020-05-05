@@ -15,6 +15,16 @@ class RecordListScreen extends StatefulWidget {
 
 class _State extends State<RecordListScreen> {
 
+  void _navigateToRecordListScreen(final BuildContext context, final DateTime datetime) {
+    final route = MaterialPageRoute(builder: (context) => RecordListScreen(datetime: datetime));
+    Navigator.of(context).push(route);
+  }
+
+  void _navigateToRegisterRecordScreen(final BuildContext context, final DateTime datetime) {
+    final route = MaterialPageRoute(builder: (context) => RegisterRecordScreen(initialDate: DateFormat('yyyyMMdd', "ja_JP").format(datetime)));
+    Navigator.of(context).push(route);
+  }
+
   DateTime createDatetimeFromString(final String dateStr) {
     String formattedDateStr =  dateStr.substring(0, 8) + 'T' + dateStr.substring(8);
     return DateTime.parse(formattedDateStr);
@@ -67,23 +77,13 @@ class _State extends State<RecordListScreen> {
       leading: RaisedButton(
         child: Icon(Icons.arrow_left),
         color: Colors.grey,
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RecordListScreen(datetime: widget.datetime.add(Duration(days: -1)))
-          ),
-        ),
+        onPressed: () => _navigateToRecordListScreen(context, widget.datetime.add(Duration(days: -1))),
       ),
       actions: <Widget>[
         RaisedButton(
           child: Icon(Icons.arrow_right),
           color: Colors.grey,
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RecordListScreen(datetime: widget.datetime.add(Duration(days: 1)))
-            ),
-          ),
+          onPressed: () => _navigateToRecordListScreen(context, widget.datetime.add(Duration(days: 1))),
         ),
       ],
     );
@@ -119,25 +119,13 @@ class _State extends State<RecordListScreen> {
           heroTag: 'register',
           child: Icon(Icons.add),
           tooltip: 'Register',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => RegisterRecordScreen(initialDate: DateFormat('yyyyMMdd', "ja_JP").format(widget.datetime))
-              ),
-            );
-          },
+          onPressed: () => _navigateToRegisterRecordScreen(context, widget.datetime),
         ),
         FloatingActionButton(
           heroTag: 'home',
           child: Icon(Icons.home),
           tooltip: 'HOME',
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RecordListScreen(datetime: DateTime.now()),
-            ),
-          ),
+          onPressed: () => _navigateToRecordListScreen(context, DateTime.now()),
         ),
       ],
     );

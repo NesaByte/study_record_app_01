@@ -8,18 +8,16 @@ class RecordListScreen extends StatefulWidget {
   RecordListScreen({Key key, this.datetime}) : super(key: key);
 
   final DateTime datetime;
+  static final navigateToTodayRecordListScreenKey = Key('navigateToTodayRecordListScreenKey');
+  static final navigateToRegisterRecordScreenKey = Key('navigateToRegisterRecordScreenKey');
+  static final navigateToYesterdayRecordListScreenKey = Key('navigateToYesterdayRecordListScreenKey');
+  static final navigateToTomorrowRecordListScreenKey = Key('navigateToTomorrowRecordListScreenKey');
 
   @override
   _State createState() => _State();
 }
 
 class _State extends State<RecordListScreen> {
-
-  static final navigateToTodayRecordListScreenKey = Key('navigateToTodayRecordListScreenKey');
-  static final navigateToRegisterRecordScreenKey = Key('navigateToRegisterRecordScreenKey');
-  static final navigateToYesterdayRecordListScreenKey = Key('navigateToYesterdayRecordListScreenKey');
-  static final navigateToTomorrowRecordListScreenKey = Key('navigateToTomorrowRecordListScreenKey');
-
 
   void _navigateToRecordListScreen(final BuildContext context, final DateTime datetime) {
     final route = MaterialPageRoute(builder: (context) => RecordListScreen(datetime: datetime));
@@ -81,14 +79,14 @@ class _State extends State<RecordListScreen> {
     return AppBar(
       title: Text(DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(widget.datetime)),
       leading: RaisedButton(
-        key: navigateToYesterdayRecordListScreenKey,
+        key: RecordListScreen.navigateToYesterdayRecordListScreenKey,
         child: Icon(Icons.arrow_left),
         color: Colors.grey,
         onPressed: () => _navigateToRecordListScreen(context, widget.datetime.add(Duration(days: -1))),
       ),
       actions: <Widget>[
         RaisedButton(
-          key: navigateToTomorrowRecordListScreenKey,
+          key: RecordListScreen.navigateToTomorrowRecordListScreenKey,
           child: Icon(Icons.arrow_right),
           color: Colors.grey,
           onPressed: () => _navigateToRecordListScreen(context, widget.datetime.add(Duration(days: 1))),
@@ -124,14 +122,14 @@ class _State extends State<RecordListScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         FloatingActionButton(
-          key: navigateToTodayRecordListScreenKey,
+          key: RecordListScreen.navigateToRegisterRecordScreenKey,
           heroTag: 'register',
           child: Icon(Icons.add),
           tooltip: 'Register',
           onPressed: () => _navigateToRegisterRecordScreen(context, widget.datetime),
         ),
         FloatingActionButton(
-          key: navigateToTodayRecordListScreenKey,
+          key: RecordListScreen.navigateToTodayRecordListScreenKey,
           heroTag: 'home',
           child: Icon(Icons.home),
           tooltip: 'HOME',

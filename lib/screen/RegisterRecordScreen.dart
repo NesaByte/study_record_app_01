@@ -12,6 +12,8 @@ class RegisterRecordScreen extends StatefulWidget {
 }
 
 class _State extends State<RegisterRecordScreen> {
+  static final navigateToRecordListScreenKey = Key('navigateToRecordListScreenKey');
+
   final _formKey = new GlobalKey<FormState>();
   final _choice = [
     Icons.computer,
@@ -213,6 +215,7 @@ class _State extends State<RegisterRecordScreen> {
     }
 
     return RaisedButton(
+      key: navigateToRecordListScreenKey,
       child: Icon(Icons.navigate_next),
       color: Colors.blue,
       shape: RoundedRectangleBorder(

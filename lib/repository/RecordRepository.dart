@@ -1,8 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:study_record_app_01/core/DatabaseHelper.dart';
 import 'package:study_record_app_01/model/Record.dart';
 

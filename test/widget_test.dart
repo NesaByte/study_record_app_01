@@ -15,7 +15,7 @@ import 'package:study_record_app_01/screen/RegisterRecordScreen.dart';
 
 void main() {
 
-  testWidgets('Test Launching...', (WidgetTester tester) async {
+  testWidgets('App unit test', (WidgetTester tester) async {
     initializeDateFormatting();
     final String _today = DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(DateTime.now());
 
@@ -28,7 +28,7 @@ void main() {
     expect(find.byIcon(Icons.home), findsOneWidget);
   });
 
-  testWidgets('Test RecordListScreen', (WidgetTester tester) async {
+  testWidgets('RecordListScreen unit test', (WidgetTester tester) async {
     initializeDateFormatting();
     final String _today = DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(DateTime.now());
 
@@ -47,7 +47,7 @@ void main() {
     expect(find.byIcon(Icons.home), findsOneWidget);
   });
 
-  testWidgets('Test RegisterRecordScreen', (WidgetTester tester) async {
+  testWidgets('RegisterRecordScreen unit test', (WidgetTester tester) async {
     initializeDateFormatting();
     final String _today = DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now());
 

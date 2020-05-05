@@ -15,6 +15,12 @@ class RecordListScreen extends StatefulWidget {
 
 class _State extends State<RecordListScreen> {
 
+  static final navigateToTodayRecordListScreenKey = Key('navigateToTodayRecordListScreenKey');
+  static final navigateToRegisterRecordScreenKey = Key('navigateToRegisterRecordScreenKey');
+  static final navigateToYesterdayRecordListScreenKey = Key('navigateToYesterdayRecordListScreenKey');
+  static final navigateToTomorrowRecordListScreenKey = Key('navigateToTomorrowRecordListScreenKey');
+
+
   void _navigateToRecordListScreen(final BuildContext context, final DateTime datetime) {
     final route = MaterialPageRoute(builder: (context) => RecordListScreen(datetime: datetime));
     Navigator.of(context).push(route);
@@ -75,12 +81,14 @@ class _State extends State<RecordListScreen> {
     return AppBar(
       title: Text(DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(widget.datetime)),
       leading: RaisedButton(
+        key: navigateToYesterdayRecordListScreenKey,
         child: Icon(Icons.arrow_left),
         color: Colors.grey,
         onPressed: () => _navigateToRecordListScreen(context, widget.datetime.add(Duration(days: -1))),
       ),
       actions: <Widget>[
         RaisedButton(
+          key: navigateToTomorrowRecordListScreenKey,
           child: Icon(Icons.arrow_right),
           color: Colors.grey,
           onPressed: () => _navigateToRecordListScreen(context, widget.datetime.add(Duration(days: 1))),
@@ -116,12 +124,14 @@ class _State extends State<RecordListScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         FloatingActionButton(
+          key: navigateToTodayRecordListScreenKey,
           heroTag: 'register',
           child: Icon(Icons.add),
           tooltip: 'Register',
           onPressed: () => _navigateToRegisterRecordScreen(context, widget.datetime),
         ),
         FloatingActionButton(
+          key: navigateToTodayRecordListScreenKey,
           heroTag: 'home',
           child: Icon(Icons.home),
           tooltip: 'HOME',

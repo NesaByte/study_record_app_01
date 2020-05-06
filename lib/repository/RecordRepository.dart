@@ -32,6 +32,14 @@ class RecordRepository {
     return await dbHelper.insert(dto.toJson(), _tableName);
   }
 
+  static Future<int> update(final Record dto) async {
+    return await dbHelper.update(
+      dto.toJson(),
+      Record.primaryKeyName,
+      _tableName
+    );
+  }
+
   static Future<int> delete(final int id) async {
     return await dbHelper.delete(Record.primaryKeyName, id.toString(), _tableName);
   }

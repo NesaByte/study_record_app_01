@@ -57,6 +57,17 @@ class RecordService {
     }
   }
 
+  static Future<int> update(final Record model) async {
+    if (!validate(model)) throw('Failed to update Record.');
+    final recentRecord = (await RecordRepository.selectOne(model.id));
+    if (model.version == recentRecord.version) {
+      model.version += 1;
+      return RecordRepository.update(model);
+    } else {
+      throw('Failed to update Record. (Version Difference)');
+    }
+  }
+
   static Future<int> delete(final int id) async {
     return await RecordRepository.delete(id);
   }

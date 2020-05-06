@@ -145,24 +145,31 @@ class _RecordListState extends State<_RecordList> {
     );
   }
 
-  Future<bool> _isDelete(final BuildContext context) async {
-    return await showCupertinoDialog(
+  Future<bool> _isDelete(final BuildContext context, final Record _record) async {
+    return await showDialog(
       context: context,
-      builder: (context) => CupertinoAlertDialog(
-        content: Text("Are you sure you want to delete?"),
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Are you sure you want to delete?",
+          style: TextStyle(color: Colors.red),
+        ),
+        content: ListTile(
+          title: Text(_record.title),
+          subtitle: Text(_record.kind),
+        ),
         actions: <Widget>[
-          CupertinoDialogAction(
-            child: Text("Ok"),
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
+          RaisedButton.icon(
+            onPressed: () => Navigator.of(context).pop(true),
+            icon: Icon(Icons.done),
+            label: Text("OK"),
+            color: Colors.green,
           ),
-          CupertinoDialogAction(
-            child: Text('Cancel'),
-            onPressed: () {
-              return Navigator.of(context).pop(false);
-            },
-          )
+          RaisedButton.icon(
+            onPressed: () => Navigator.of(context).pop(false),
+            icon: Icon(Icons.close),
+            label: Text("Cancel"),
+            color: Colors.red,
+          ),
         ],
       ),
     ) ??
@@ -176,7 +183,7 @@ class _RecordListState extends State<_RecordList> {
       Navigator.of(context).push(route);
       return false;
     } else {
-      return _isDelete(context);
+      return _isDelete(context, _record);
     }
   }
 

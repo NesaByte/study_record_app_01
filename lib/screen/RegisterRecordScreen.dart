@@ -66,11 +66,7 @@ class _State extends State<RegisterRecordScreen> {
               hintText: 'YYYYMMDD'
             ),
             initialValue: _fromDate,
-            validator: (value) {
-              if (value.isEmpty) return 'Can\'t be empty.';
-              // if (value.length != 8 || int.parse(value) >= 0) return 'Please just 8 digits & only half-width digit.';
-              return null;
-            },
+            validator: (value) => value.isEmpty ? 'Can\'t be empty' : null,
             onSaved: (value) => setState(() => _fromDate = value),
           )
         ),
@@ -204,14 +200,14 @@ class _State extends State<RegisterRecordScreen> {
     _formKey.currentState.save();
     final int recentId = (await RecordService.selectAll()).length;
     final dto = Record(
-        id: recentId + 1,
-        title: _title,
-        kind: _kind,
-        iconCodePoint: _iconData.codePoint,
-        iconFontFamily: _iconData.fontFamily,
-        fromDate: _fromDate + _fromTime,
-        toDate: _toDate + _toTime,
-        version: 1
+      id: recentId + 1,
+      title: _title,
+      kind: _kind,
+      iconCodePoint: _iconData.codePoint,
+      iconFontFamily: _iconData.fontFamily,
+      fromDate: _fromDate + _fromTime,
+      toDate: _toDate + _toTime,
+      version: 1
     );
     await RecordService.insert(dto)
       .then((value) => _navigateToRecordListScreen(context, DateTime.now()))

@@ -16,15 +16,15 @@ class SelectIconRadioFormField extends FormField<IconData> {
       builder: (FormFieldState<IconData> state) {
         List<Widget> widgets = [];
         widgets.add(
-            Expanded(
-                flex: 1,
-                child: Text(
-                  'Icon',
-                  style: TextStyle(
-                      fontSize: 12.0
-                  ),
-                )
+          Expanded(
+            flex: 1,
+            child: Text(
+              'Icon',
+              style: TextStyle(
+                fontSize: 12.0
+              ),
             )
+          )
         );
         choice.forEach((iconData) => widgets.add(Expanded(
           flex: 3,
@@ -49,7 +49,7 @@ class SelectIconRadioFormField extends FormField<IconData> {
               Text(
                 state.errorText,
                 style: TextStyle(
-                    color: Colors.red[700]
+                  color: Colors.red[700]
                 ),
               ),
             ],

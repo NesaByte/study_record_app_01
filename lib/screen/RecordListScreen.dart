@@ -187,6 +187,7 @@ class _RecordListState extends State<_RecordList> {
       key: Key("studyRecord.${_record.id}"),
       confirmDismiss: (direction) => _isDismiss(context, direction, _record),
       onDismissed: (direction) {
+        RecordService.delete(_record.id);
         setState(() {
           _recordList.removeAt(index);
         });

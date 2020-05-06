@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:study_record_app_01/model/Record.dart';
@@ -150,11 +151,35 @@ class _RecordListState extends State<_RecordList> {
     );
   }
 
-  Future<bool> _isDismiss(DismissDirection direction, Record _record) async {
+  Future<bool> _isDelete(BuildContext context) async {
+    return await showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        content: Text("Are you sure you want to delete?"),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            child: Text("Ok"),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text('Cancel'),
+            onPressed: () {
+              return Navigator.of(context).pop(false);
+            },
+          )
+        ],
+      ),
+    ) ??
+    false;
+  }
+
+  Future<bool> _isDismiss(BuildContext context, DismissDirection direction, Record _record) async {
     if (direction == DismissDirection.startToEnd) {
       return false;
     } else {
-      return true;
+      return _isDelete(context);
     }
   }
 
@@ -163,7 +188,7 @@ class _RecordListState extends State<_RecordList> {
       background: Container(color: Colors.blue, child: Icon(Icons.edit)),
       secondaryBackground: Container(color: Colors.red, child: Icon(Icons.close)),
       key: Key("studyRecord.${_record.id}"),
-      confirmDismiss: (direction) => _isDismiss(direction, _record),
+      confirmDismiss: (direction) => _isDismiss(context, direction, _record),
       onDismissed: (direction) {
         setState(() {
           _recordList.removeAt(index);

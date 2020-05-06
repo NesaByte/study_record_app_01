@@ -50,6 +50,28 @@ class _State extends State<RecordListScreen> {
     );
   }
 
+  Widget _buildFloatingActionButton(final BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        FloatingActionButton(
+          key: RecordListScreen.navigateToRegisterRecordScreenKey,
+          heroTag: 'register',
+          tooltip: 'Register',
+          child: Icon(Icons.add),
+          onPressed: () => _navigateToRegisterRecordScreen(context, widget.datetime),
+        ),
+        FloatingActionButton(
+          key: RecordListScreen.navigateToTodayRecordListScreenKey,
+          heroTag: 'home',
+          tooltip: 'HOME',
+          child: Icon(Icons.home),
+          onPressed: () => _navigateToRecordListScreen(context, DateTime.now()),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,38 +84,10 @@ class _State extends State<RecordListScreen> {
               return CircularProgressIndicator();
             }
             return _RecordList(recordList: future.data);
-            /*
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: _buildRecordList(future.data)
-            );
-             */
           },
         ),
       ),
       floatingActionButton: _buildFloatingActionButton(context)
-    );
-  }
-
-  Widget _buildFloatingActionButton(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        FloatingActionButton(
-          key: RecordListScreen.navigateToRegisterRecordScreenKey,
-          heroTag: 'register',
-          child: Icon(Icons.add),
-          tooltip: 'Register',
-          onPressed: () => _navigateToRegisterRecordScreen(context, widget.datetime),
-        ),
-        FloatingActionButton(
-          key: RecordListScreen.navigateToTodayRecordListScreenKey,
-          heroTag: 'home',
-          child: Icon(Icons.home),
-          tooltip: 'HOME',
-          onPressed: () => _navigateToRecordListScreen(context, DateTime.now()),
-        ),
-      ],
     );
   }
 }
@@ -131,7 +125,7 @@ class _RecordListState extends State<_RecordList> {
     return (elaspedHour + (elaspedMinute / 60)).toStringAsPrecision(3) + "h";
   }
 
-  Widget _buildRecordComponent(Record _record) {
+  Widget _buildRecordComponent(final Record _record) {
     return ListTile(
       leading: Icon(
         IconData(
@@ -151,7 +145,7 @@ class _RecordListState extends State<_RecordList> {
     );
   }
 
-  Future<bool> _isDelete(BuildContext context) async {
+  Future<bool> _isDelete(final BuildContext context) async {
     return await showCupertinoDialog(
       context: context,
       builder: (context) => CupertinoAlertDialog(
@@ -175,7 +169,7 @@ class _RecordListState extends State<_RecordList> {
     false;
   }
 
-  Future<bool> _isDismiss(BuildContext context, DismissDirection direction, Record _record) async {
+  Future<bool> _isDismiss(final BuildContext context, final DismissDirection direction, final Record _record) async {
     if (direction == DismissDirection.startToEnd) {
       // dummy
       final route = MaterialPageRoute(builder: (context) => RegisterRecordScreen(initialDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now())));
@@ -186,7 +180,7 @@ class _RecordListState extends State<_RecordList> {
     }
   }
 
-  Widget _buildDismissibleRecordComponent(int index, Record _record, Widget child) {
+  Widget _buildDismissibleRecordComponent(final int index, final Record _record, final Widget child) {
     return Dismissible(
       background: Container(color: Colors.blue, child: Icon(Icons.edit)),
       secondaryBackground: Container(color: Colors.red, child: Icon(Icons.close)),
@@ -201,7 +195,7 @@ class _RecordListState extends State<_RecordList> {
     );
   }
 
-  Widget _wrapCommonContainer(Widget _widget) => Container(
+  Widget _wrapCommonContainer(final Widget _widget) => Container(
     padding: EdgeInsets.all(8.0),
     child: _widget,
   );
@@ -220,5 +214,4 @@ class _RecordListState extends State<_RecordList> {
       }
     );
   }
-
 }

@@ -339,7 +339,6 @@ class RadioFormField extends FormField<IconData> {
                   groupValue: state.value,
                   onChanged: (value) {
                     state.didChange(value);
-                    // print(IconData(state.value.codePoint, fontFamily: state.value.fontFamily));
                   },
                 )
               ],

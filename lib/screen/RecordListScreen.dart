@@ -29,79 +29,6 @@ class _State extends State<RecordListScreen> {
     Navigator.of(context).push(route);
   }
 
-  DateTime createDatetimeFromString(final String dateStr) {
-    String formattedDateStr =  dateStr.substring(0, 8) + 'T' + dateStr.substring(8);
-    return DateTime.parse(formattedDateStr);
-  }
-
-  String createFormattedDatetime(final DateTime datetime) {
-    return DateFormat('a h:mm').format(datetime);
-  }
-
-  String createFormattedElaspedTime(final String fromDate, final String toDate) {
-    int elaspedHour = int.parse(toDate.substring(8, 10)) - int.parse(fromDate.substring(8, 10));
-    int elaspedMinute = int.parse(toDate.substring(10, 12)) - int.parse(fromDate.substring(10, 12));
-    return (elaspedHour + (elaspedMinute / 60)).toStringAsPrecision(3) + "h";
-  }
-
-  List<Widget> _buildRecordList(List<Record> list) {
-    List<Widget> widgetList = [];
-    list.forEach((dto) => widgetList.add(_wrapCommonContainer(_buildDismissibleRecordComponent(dto))));
-    return widgetList;
-  }
-
-  Widget _buildRecordComponent(Record _record) {
-    return ListTile(
-      leading: Icon(
-        IconData(
-          _record.iconCodePoint,
-          fontFamily: _record.iconFontFamily
-        )
-      ),
-      title: Text(_record.title),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(_record.kind),
-          Text(createFormattedDatetime(createDatetimeFromString(_record.fromDate)) + " ~ " + createFormattedDatetime(createDatetimeFromString(_record.toDate))),
-        ],
-      ),
-      trailing: Text(createFormattedElaspedTime(_record.fromDate,_record.toDate)),
-    );
-  }
-
-  Widget _buildDismissibleRecordComponent(Record _record) {
-    return Dismissible(
-      background: Container(color: Colors.red, child: Icon(Icons.close)),
-      secondaryBackground: Container(color: Colors.blue, child: Icon(Icons.edit)),
-      key: Key("studyRecord.${_record.id}"),
-      confirmDismiss: (direction) => _isDismiss(direction),
-      /*
-      onDismissed: (direction) {
-        if (direction == DismissDirection.endToStart) {
-          print("DELETE: No.${_record.id}");
-        } else if (direction == DismissDirection.startToEnd) {
-          print("EDIT: No.${_record.id}");
-        }
-      },
-       */
-      child: _buildRecordComponent(_record),
-    );
-  }
-
-  Future<bool> _isDismiss(DismissDirection direction) async {
-    if (direction == DismissDirection.startToEnd) {
-      return false;
-    } else {
-      return false;
-    }
-  }
-
-  Widget _wrapCommonContainer(Widget _widget) => Container(
-    padding: EdgeInsets.all(8.0),
-    child: _widget,
-  );
-
   Widget _buildAppBar(final BuildContext context, final DateTime datetime) {
     return AppBar(
       title: Text(DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(widget.datetime)),
@@ -133,10 +60,13 @@ class _State extends State<RecordListScreen> {
             if (!future.hasData) {
               return CircularProgressIndicator();
             }
-            return Column(
+            return _RecordList(recordList: future.data);
+            /*
+            Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: _buildRecordList(future.data)
             );
+             */
           },
         ),
       ),
@@ -165,4 +95,102 @@ class _State extends State<RecordListScreen> {
       ],
     );
   }
+}
+
+class _RecordList extends StatefulWidget {
+  _RecordList({Key key, this.recordList}) : super(key: key);
+
+  final List<Record> recordList;
+
+  @override
+  _RecordListState createState() => _RecordListState();
+}
+
+class _RecordListState extends State<_RecordList> {
+  List<Record> _recordList;
+
+  @override
+  void initState() {
+    super.initState();
+    _recordList = widget.recordList;
+  }
+
+  DateTime createDatetimeFromString(final String dateStr) {
+    String formattedDateStr =  dateStr.substring(0, 8) + 'T' + dateStr.substring(8);
+    return DateTime.parse(formattedDateStr);
+  }
+
+  String createFormattedDatetime(final DateTime datetime) {
+    return DateFormat('a h:mm').format(datetime);
+  }
+
+  String createFormattedElaspedTime(final String fromDate, final String toDate) {
+    int elaspedHour = int.parse(toDate.substring(8, 10)) - int.parse(fromDate.substring(8, 10));
+    int elaspedMinute = int.parse(toDate.substring(10, 12)) - int.parse(fromDate.substring(10, 12));
+    return (elaspedHour + (elaspedMinute / 60)).toStringAsPrecision(3) + "h";
+  }
+
+  Widget _buildRecordComponent(Record _record) {
+    return ListTile(
+      leading: Icon(
+        IconData(
+          _record.iconCodePoint,
+          fontFamily: _record.iconFontFamily
+        )
+      ),
+      title: Text(_record.title),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(_record.kind),
+          Text(createFormattedDatetime(createDatetimeFromString(_record.fromDate)) + " ~ " + createFormattedDatetime(createDatetimeFromString(_record.toDate))),
+        ],
+      ),
+      trailing: Text(createFormattedElaspedTime(_record.fromDate,_record.toDate)),
+    );
+  }
+
+  Future<bool> _isDismiss(DismissDirection direction, Record _record) async {
+    if (direction == DismissDirection.startToEnd) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  Widget _buildDismissibleRecordComponent(int index, Record _record, Widget child) {
+    return Dismissible(
+      background: Container(color: Colors.blue, child: Icon(Icons.edit)),
+      secondaryBackground: Container(color: Colors.red, child: Icon(Icons.close)),
+      key: Key("studyRecord.${_record.id}"),
+      confirmDismiss: (direction) => _isDismiss(direction, _record),
+      onDismissed: (direction) {
+        setState(() {
+          _recordList.removeAt(index);
+        });
+      },
+      child: child,
+    );
+  }
+
+  Widget _wrapCommonContainer(Widget _widget) => Container(
+    padding: EdgeInsets.all(8.0),
+    child: _widget,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: _recordList.length,
+      itemBuilder: (BuildContext context, int index) {
+        Record _record = _recordList[index];
+        return _buildDismissibleRecordComponent(
+          index,
+          _record,
+          _wrapCommonContainer(_buildRecordComponent(_record))
+        );
+      }
+    );
+  }
+
 }

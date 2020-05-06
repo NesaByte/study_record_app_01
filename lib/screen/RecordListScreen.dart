@@ -177,6 +177,9 @@ class _RecordListState extends State<_RecordList> {
 
   Future<bool> _isDismiss(BuildContext context, DismissDirection direction, Record _record) async {
     if (direction == DismissDirection.startToEnd) {
+      // dummy
+      final route = MaterialPageRoute(builder: (context) => RegisterRecordScreen(initialDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now())));
+      Navigator.of(context).push(route);
       return false;
     } else {
       return _isDelete(context);

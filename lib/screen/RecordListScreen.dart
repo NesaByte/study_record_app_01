@@ -160,15 +160,14 @@ class _RecordListState extends State<_RecordList> {
         actions: <Widget>[
           RaisedButton.icon(
             onPressed: () => Navigator.of(context).pop(true),
-            icon: Icon(Icons.done),
+            icon: Icon(Icons.delete),
             label: Text("OK"),
-            color: Colors.green,
+            color: Colors.red,
           ),
           RaisedButton.icon(
             onPressed: () => Navigator.of(context).pop(false),
             icon: Icon(Icons.close),
             label: Text("Cancel"),
-            color: Colors.red,
           ),
         ],
       ),

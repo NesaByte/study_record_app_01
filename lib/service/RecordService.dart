@@ -31,12 +31,12 @@ class RecordService {
     List<Record> result = [];
     final List<Record> dtos = await selectAll();
     dtos.forEach((dto) {
-      if (_isIncludeSpecifiedDate(basisDate, dto)) result.add(dto);
+      if (isIncludeSpecifiedDate(basisDate, dto)) result.add(dto);
     });
     return result;
   }
 
-  static bool _isIncludeSpecifiedDate(final int basisDate, final Record dto) {
+  static bool isIncludeSpecifiedDate(final int basisDate, final Record dto) {
     int dtoFromDate = int.parse(dto.fromDate.substring(0, 8));
     int dtoToDate = int.parse(dto.fromDate.substring(0, 8));
     if (dtoFromDate <= basisDate && basisDate <= dtoToDate) {

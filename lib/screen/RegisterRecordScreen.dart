@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_record_app_01/component/SelectIconRadioFormField.dart';
 import 'package:study_record_app_01/model/Record.dart';
 import 'package:study_record_app_01/service/RecordService.dart';
 
@@ -282,7 +283,7 @@ class _State extends State<RegisterRecordScreen> {
                 _wrapCommonContainer(_buildToDatetimeRow()),
                 _wrapCommonContainer(_buildTitleRow()),
                 _wrapCommonContainer(_buildKindRow()),
-                _wrapCommonContainer(RadioFormField(
+                _wrapCommonContainer(SelectIconRadioFormField(
                   choice: _choice,
                   initialValue: null,
                   onSaved: (value) => setState(() => _iconData = value),
@@ -303,63 +304,3 @@ class _State extends State<RegisterRecordScreen> {
   }
 }
 
-class RadioFormField extends FormField<IconData> {
-  RadioFormField(
-    {FormFieldSetter<IconData> onSaved,
-    FormFieldValidator<IconData> validator,
-    IconData initialValue,
-    bool autovalidate = false,
-    List<IconData> choice,
-    })
-      : super(
-        onSaved: onSaved,
-        validator: validator,
-        initialValue: initialValue,
-        autovalidate: autovalidate,
-        builder: (FormFieldState<IconData> state) {
-          List<Widget> widgets = [];
-          widgets.add(
-            Expanded(
-              flex: 1,
-              child: Text(
-                'Icon',
-                style: TextStyle(
-                  fontSize: 12.0
-                ),
-              )
-            )
-          );
-          choice.forEach((iconData) => widgets.add(Expanded(
-            flex: 3,
-            child: Column(
-              children: <Widget>[
-                Icon(iconData),
-                Radio(
-                  value: iconData,
-                  groupValue: state.value,
-                  onChanged: (value) {
-                    state.didChange(value);
-                  },
-                )
-              ],
-            ),
-          )));
-
-          if (state.hasError) {
-            return Column(
-              children: <Widget>[
-                Row(children: widgets),
-                Text(
-                  state.errorText,
-                  style: TextStyle(
-                    color: Colors.red[700]
-                  ),
-                ),
-              ],
-            );
-          } else {
-            return Row(children: widgets);
-          }
-        }
-      );
-}

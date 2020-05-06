@@ -3,6 +3,8 @@ import 'package:study_record_app_01/component/SelectIconRadioFormField.dart';
 import 'package:study_record_app_01/model/Record.dart';
 import 'package:study_record_app_01/service/RecordService.dart';
 
+import 'RecordListScreen.dart';
+
 class RegisterRecordScreen extends StatefulWidget {
   RegisterRecordScreen({Key key, this.initialDate}) : super(key: key);
 
@@ -36,6 +38,11 @@ class _State extends State<RegisterRecordScreen> {
     super.initState();
     _fromDate = widget.initialDate;
     _toDate = widget.initialDate;
+  }
+
+  void _navigateToRecordListScreen(final BuildContext context, final DateTime datetime) {
+    final route = MaterialPageRoute(builder: (context) => RecordListScreen(datetime: datetime));
+    Navigator.of(context).push(route);
   }
 
   Widget _buildFromDatetimeRow() {
@@ -192,12 +199,11 @@ class _State extends State<RegisterRecordScreen> {
     );
   }
 
-  Widget _buildSubmitButton() {
-    void _submit() async {
-      if (!_formKey.currentState.validate()) return;
-      _formKey.currentState.save();
-      final int recentId = (await RecordService.selectAll()).length;
-      final dto = Record(
+  void _submitCreate() async {
+    if (!_formKey.currentState.validate()) return;
+    _formKey.currentState.save();
+    final int recentId = (await RecordService.selectAll()).length;
+    final dto = Record(
         id: recentId + 1,
         title: _title,
         kind: _kind,
@@ -206,15 +212,14 @@ class _State extends State<RegisterRecordScreen> {
         fromDate: _fromDate + _fromTime,
         toDate: _toDate + _toTime,
         version: 1
-      );
-      await RecordService.insert(dto)
-        .then((value) {
-          Navigator.pop(context);
-        }).catchError((e) {
-          print(e);
-        });
-    }
+    );
+    await RecordService.insert(dto)
+      .then((value) => _navigateToRecordListScreen(context, DateTime.now()))
+      .catchError((e) => print(e)
+    );
+  }
 
+  Widget _buildSubmitButton() {
     return RaisedButton(
       key: RegisterRecordScreen.navigateToRecordListScreenKey,
       child: Icon(Icons.navigate_next),
@@ -222,7 +227,7 @@ class _State extends State<RegisterRecordScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      onPressed: _submit
+      onPressed: _submitCreate
     );
   }
 

@@ -212,11 +212,10 @@ class _State extends State<UpdateRecordScreen> {
     );
   }
 
-  Widget _buildSubmitButton() {
-    void _submit() async {
-      if (!_formKey.currentState.validate()) return;
-      _formKey.currentState.save();
-      final dto = Record(
+  void _submitUpdate() async {
+    if (!_formKey.currentState.validate()) return;
+    _formKey.currentState.save();
+    final dto = Record(
         id: _baseRecord.id,
         title: _title,
         kind: _kind,
@@ -225,15 +224,14 @@ class _State extends State<UpdateRecordScreen> {
         fromDate: _fromDate + _fromTime,
         toDate: _toDate + _toTime,
         version: _baseRecord.version
-      );
-      await RecordService.update(dto)
-        .then((value) {
-          _navigateToRecordListScreen(context, DateTime.now());
-        }).catchError((e) {
-          print(e);
-        });
-    }
+    );
+    await RecordService.update(dto)
+      .then((value) => _navigateToRecordListScreen(context, DateTime.now()))
+      .catchError((e) => print(e)
+    );
+  }
 
+  Widget _buildSubmitButton() {
     return RaisedButton(
       key: UpdateRecordScreen.navigateToRecordListScreenKey,
       child: Icon(Icons.navigate_next),
@@ -241,7 +239,7 @@ class _State extends State<UpdateRecordScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      onPressed: _submit
+      onPressed: _submitUpdate
     );
   }
 

@@ -5,6 +5,7 @@ import 'package:study_record_app_01/service/RecordService.dart';
 class RegisterRecordScreen extends StatefulWidget {
   RegisterRecordScreen({Key key, this.initialDate}) : super(key: key);
 
+  static final navigateToRecordListScreenKey = Key('navigateToRecordListScreenKey');
   final String initialDate;
 
   @override
@@ -12,7 +13,6 @@ class RegisterRecordScreen extends StatefulWidget {
 }
 
 class _State extends State<RegisterRecordScreen> {
-  static final navigateToRecordListScreenKey = Key('navigateToRecordListScreenKey');
 
   final _formKey = new GlobalKey<FormState>();
   final _choice = [
@@ -215,7 +215,7 @@ class _State extends State<RegisterRecordScreen> {
     }
 
     return RaisedButton(
-      key: navigateToRecordListScreenKey,
+      key: RegisterRecordScreen.navigateToRecordListScreenKey,
       child: Icon(Icons.navigate_next),
       color: Colors.blue,
       shape: RoundedRectangleBorder(

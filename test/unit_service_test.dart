@@ -14,8 +14,8 @@ main() {
         kind: 'Programming',
         iconCodePoint: Icons.computer.codePoint,
         iconFontFamily: Icons.computer.fontFamily,
-        fromDate: "000000000000",
-        toDate: "000000000000",
+        fromDate: "200001010000",
+        toDate: "200001012359",
         version: 0
       );
     });

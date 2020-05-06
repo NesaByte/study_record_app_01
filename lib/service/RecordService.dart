@@ -56,4 +56,8 @@ class RecordService {
       throw('Failed to create Record.');
     }
   }
+
+  static Future<int> delete(final int id) async {
+    return await RecordRepository.delete(id);
+  }
 }

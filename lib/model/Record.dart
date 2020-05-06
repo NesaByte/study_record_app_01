@@ -10,6 +10,8 @@ Record recordFromJson(String str) => Record.fromJson(json.decode(str));
 String recordToJson(Record data) => json.encode(data.toJson());
 
 class Record {
+  static final String primaryKeyName = "id";
+
   int id;
   String title;
   String kind;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:study_record_app_01/model/Record.dart';
 import 'package:study_record_app_01/screen/RegisterRecordScreen.dart';
+import 'package:study_record_app_01/screen/UpdateRecordScreen.dart';
 import 'package:study_record_app_01/service/RecordService.dart';
 
 class RecordListScreen extends StatefulWidget {
@@ -110,6 +111,11 @@ class _RecordListState extends State<_RecordList> {
     _recordList = widget.recordList;
   }
 
+  void _navigateToUpdateRecordScreen(final BuildContext context, final Record _record) {
+    final route = MaterialPageRoute(builder: (context) => UpdateRecordScreen(baseRecord: _record));
+    Navigator.of(context).push(route);
+  }
+
   DateTime createDatetimeFromString(final String dateStr) {
     String formattedDateStr =  dateStr.substring(0, 8) + 'T' + dateStr.substring(8);
     return DateTime.parse(formattedDateStr);
@@ -177,9 +183,7 @@ class _RecordListState extends State<_RecordList> {
 
   Future<bool> _isDismiss(final BuildContext context, final DismissDirection direction, final Record _record) async {
     if (direction == DismissDirection.startToEnd) {
-      // dummy
-      final route = MaterialPageRoute(builder: (context) => RegisterRecordScreen(initialDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now())));
-      Navigator.of(context).push(route);
+      _navigateToUpdateRecordScreen(context, _record);
       return false;
     } else {
       return _isDelete(context, _record);

@@ -73,8 +73,8 @@ class DatabaseHelper {
 
   Future<int> update(final Map<String, dynamic> row, final String primaryKeyName, final String table) async {
     final Database db = await instance.getDatabase();
-    final primaryKey = row[primaryKeyName];
-    return await db.update(table, row, where: '$primaryKey = ?', whereArgs: [primaryKeyName]);
+    final primaryKeyValue = row[primaryKeyName];
+    return await db.update(table, row, where: '$primaryKeyName = ?', whereArgs: [primaryKeyValue]);
   }
 
   Future<int> delete(final String primaryKeyName, final String primaryKeyValue, final String table) async {

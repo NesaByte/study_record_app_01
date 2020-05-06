@@ -46,7 +46,7 @@ class _State extends State<RecordListScreen> {
 
   List<Widget> _buildRecordList(List<Record> list) {
     List<Widget> widgetList = [];
-    list.forEach((dto) => widgetList.add(_wrapCommonContainer(_buildRecordComponent(dto))));
+    list.forEach((dto) => widgetList.add(_wrapCommonContainer(_buildDismissibleRecordComponent(dto))));
     return widgetList;
   }
 
@@ -68,6 +68,33 @@ class _State extends State<RecordListScreen> {
       ),
       trailing: Text(createFormattedElaspedTime(_record.fromDate,_record.toDate)),
     );
+  }
+
+  Widget _buildDismissibleRecordComponent(Record _record) {
+    return Dismissible(
+      background: Container(color: Colors.red, child: Icon(Icons.close)),
+      secondaryBackground: Container(color: Colors.blue, child: Icon(Icons.edit)),
+      key: Key("studyRecord.${_record.id}"),
+      confirmDismiss: (direction) => _isDismiss(direction),
+      /*
+      onDismissed: (direction) {
+        if (direction == DismissDirection.endToStart) {
+          print("DELETE: No.${_record.id}");
+        } else if (direction == DismissDirection.startToEnd) {
+          print("EDIT: No.${_record.id}");
+        }
+      },
+       */
+      child: _buildRecordComponent(_record),
+    );
+  }
+
+  Future<bool> _isDismiss(DismissDirection direction) async {
+    if (direction == DismissDirection.startToEnd) {
+      return false;
+    } else {
+      return false;
+    }
   }
 
   Widget _wrapCommonContainer(Widget _widget) => Container(

@@ -110,63 +110,69 @@ class _State extends State<CalendarScreen> {
     );
   }
 
-  Widget _buildDayDetails() {
-    List<Widget> _children = <Widget>[];
-    String dateKey = DateFormat('yyyyMMdd', "ja_JP").format(_selectedDate);
-    _children.add(_wrapCommonContainer(
-        Text(
-          DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(_selectedDate),
-          style: TextStyle(
+  Widget _buildDayDetailsHeader() {
+    return _wrapCommonContainer(
+      Text(
+        DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(_selectedDate),
+        style: TextStyle(
             fontSize: 18.0
+        ),
+      )
+    );
+  }
+
+  Widget _buildDayDetailsBody(final String dateKey) {
+    Map<IconData, int> map = {};
+    _recordMap[dateKey].forEach((element) {
+      IconData iconData = IconData(element.iconCodePoint, fontFamily: element.iconFontFamily);
+      if (map.containsKey(iconData)) {
+        map[iconData]++;
+      } else {
+        map[iconData] = 1;
+      }
+    });
+    List<TableRow> _tableRows = <TableRow>[
+      TableRow(
+        children: [
+          TableCell(
+            child: Center(child: Text('Icon')),
+            verticalAlignment: TableCellVerticalAlignment.middle,
           ),
-        )
-    ));
-    if (_recordMap.containsKey(dateKey)) {
-      Map<IconData, int> map = {};
-      _recordMap[dateKey].forEach((element) {
-        IconData iconData = IconData(element.iconCodePoint, fontFamily: element.iconFontFamily);
-        if (map.containsKey(iconData)) {
-          map[iconData]++;
-        } else {
-          map[iconData] = 1;
-        }
-      });
-      List<TableRow> _tableRows = <TableRow>[
+          TableCell(
+            child: Center(child: Text('Count')),
+            verticalAlignment: TableCellVerticalAlignment.middle,
+          )
+        ]
+      )
+    ];
+    map.forEach((key, value) {
+      _tableRows.add(
         TableRow(
           children: [
             TableCell(
-              child: Center(child: Text('Icon')),
+              child: Center(child: Icon(key)),
               verticalAlignment: TableCellVerticalAlignment.middle,
             ),
             TableCell(
-              child: Center(child: Text('Count')),
+              child: Center(child: Text(value.toString())),
               verticalAlignment: TableCellVerticalAlignment.middle,
             )
           ]
         )
-      ];
-      map.forEach((key, value) {
-        _tableRows.add(
-          TableRow(
-            children: [
-              TableCell(
-                child: Center(child: Icon(key)),
-                verticalAlignment: TableCellVerticalAlignment.middle,
-              ),
-              TableCell(
-                child: Center(child: Text(value.toString())),
-                verticalAlignment: TableCellVerticalAlignment.middle,
-              )
-            ]
-          )
-        );
-      });
-      _children.add(
-        Table(
-          border: TableBorder.all(color: Colors.grey, width: 1, style: BorderStyle.none),
-          children: _tableRows
-        )
       );
+    });
+    return Table(
+      border: TableBorder.all(color: Colors.grey, width: 1, style: BorderStyle.none),
+      children: _tableRows
+    );
+  }
+
+  Widget _buildDayDetails() {
+    List<Widget> _children = <Widget>[];
+    final String dateKey = DateFormat('yyyyMMdd', "ja_JP").format(_selectedDate);
+    _children.add(_buildDayDetailsHeader());
+    if (_recordMap.containsKey(dateKey)) {
+      _children.add(_buildDayDetailsBody(dateKey));
     } else {
       _children.add(_wrapCommonContainer(Text('NODATA')));
     }

@@ -180,19 +180,24 @@ class _State extends State<CalendarScreen> {
     );
   }
 
-  Widget _buildDayDetails() {
-    List<Widget> _children = <Widget>[];
+  Widget _buildDayDetails(final double maxWidth, final double maxHeight) {
     final String dateKey = DateFormat('yyyyMMdd', "ja_JP").format(_selectedDate);
-    _children.add(_buildDayDetailsHeader());
-    if (_recordMap.containsKey(dateKey)) {
-      final Map<IconData, double> summaryMap = _createSummaryMap(dateKey);
-      _children.add(_buildDayDetailsBody(summaryMap));
-      // _children.add(HorizontalBarChart.fromSummaryMap(summaryMap));
-    } else {
-      _children.add(_wrapCommonContainer(Text('NODATA')));
-    }
+    if (!_recordMap.containsKey(dateKey)) return _wrapCommonContainer(Text('NODATA'));
+
+    final Map<IconData, double> summaryMap = _createSummaryMap(dateKey);
     return Column(
-      children: _children,
+      children: <Widget>[
+        SizedBox(
+          width: maxWidth,
+          height: maxHeight * 0.5,
+          child: _buildDayDetailsBody(summaryMap)
+        ),
+        SizedBox(
+          width: maxWidth,
+          height: maxHeight * 0.5,
+          child: HorizontalBarChart.fromSummaryMap(summaryMap)
+        ),
+      ],
     );
   }
 
@@ -203,13 +208,25 @@ class _State extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: <Widget>[
-          _buildTableCalendar(),
-          _buildDayDetails(),
-        ],
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              width: size.width,
+              height: size.height * 0.5,
+              child: _buildTableCalendar(),
+            ),
+            SizedBox(
+              width: size.width,
+              height: size.height * 0.3,
+              child: _buildDayDetails(size.width, size.height * 0.3)
+            )
+          ],
+        )
       ),
     );
   }
@@ -231,6 +248,11 @@ class HorizontalBarChart extends StatelessWidget {
   static List<charts.Series<RecordSummary, String>> _createData(final Map<IconData, double> map) {
     List<RecordSummary> data = [];
     map.forEach((key, value) => data.add(RecordSummary(key.toString(), value, Color.fromARGB(min(255, (25.5 * value).floor()), 0, 0, 255))));
+    // data.add(RecordSummary("computer", 5.5, Colors.blue));
+    // data.add(RecordSummary("book", 3.5, Colors.blue));
+    // data.add(RecordSummary("break", 3.75, Colors.blue));
+    // data.add(RecordSummary("work", 4.25, Colors.blue));
+
     return [
       new charts.Series<RecordSummary, String>(
         id: 'Hours',

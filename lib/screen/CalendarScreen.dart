@@ -93,7 +93,6 @@ class _State extends State<CalendarScreen> {
     setState(() {
       _selectedDate = day;
     });
-    print(_selectedDate);
   }
 
   void _onDayLongPressed(DateTime day, List events) {

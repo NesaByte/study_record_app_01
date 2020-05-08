@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:study_record_app_01/main.dart';
 import 'package:study_record_app_01/screen/RecordListScreen.dart';
 import 'package:study_record_app_01/screen/RegisterRecordScreen.dart';
@@ -17,6 +16,7 @@ void main() {
     await tester.pumpAndSettle(Duration(seconds: 5));
   }
 
+  /*
   Future<Null> _navigateToHome(WidgetTester tester) async {
     await tester.tap(find.byKey(RecordListScreen.navigateToTodayRecordListScreenKey));
     await tester.pumpAndSettle(Duration(seconds: 5));
@@ -31,6 +31,7 @@ void main() {
     await tester.tap(find.byKey(RecordListScreen.navigateToTomorrowRecordListScreenKey));
     await tester.pump(Duration(seconds: 5));
   }
+   */
 
   group("", () {
     testWidgets('navigate to RegisterRecordScreen', (WidgetTester tester) async {

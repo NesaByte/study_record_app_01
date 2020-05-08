@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_record_app_01/model/Record.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'RecordListScreen.dart';
@@ -24,7 +25,23 @@ final Map<DateTime, List> _holidays = {
   DateTime(2020, 11, 23): ['勤労感謝の日'],
 };
 
+Map<DateTime, List> _createEvents(final List<Record> recordList) {
+  Map<DateTime, List> results = {};
+  recordList.forEach((element) {
+    DateTime key = DateTime.parse(element.fromDate.substring(0, 8));
+    if (results.containsKey(key)) {
+      results[key].add(element.title);
+    } else {
+      results[key] = [element.title];
+    }
+  });
+  return results;
+}
+
 class CalendarScreen extends StatefulWidget {
+
+  CalendarScreen(this.recordList);
+  final List<Record> recordList;
 
   @override
   _State createState() => _State();
@@ -32,11 +49,13 @@ class CalendarScreen extends StatefulWidget {
 
 class _State extends State<CalendarScreen> {
   CalendarController _calendarController;
+  Map<DateTime, List> _events;
 
   @override
   void initState() {
     super.initState();
     _calendarController = CalendarController();
+    _events = _createEvents(widget.recordList);
   }
 
   @override
@@ -58,6 +77,7 @@ class _State extends State<CalendarScreen> {
     return TableCalendar(
       locale: 'ja_JP',
       calendarController: _calendarController,
+      events: _events,
       holidays: _holidays,
       onDayLongPressed: (day, events) => _onDaySelected(day, events),
     );

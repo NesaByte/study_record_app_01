@@ -33,8 +33,9 @@ class _State extends State<RecordListScreen> {
     Navigator.of(context).push(route);
   }
 
-  void _navigateToCalendarScreen(final BuildContext context) {
-    final route = MaterialPageRoute(builder: (context) => CalendarScreen());
+  void _navigateToCalendarScreen(final BuildContext context) async {
+    List<Record> _list = await RecordService.selectAll();
+    final route = MaterialPageRoute(builder: (context) => CalendarScreen(_list));
     Navigator.of(context).push(route);
   }
 

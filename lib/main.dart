@@ -33,7 +33,15 @@ Widget createHomeForDevelopment() {
     future: resetTestData(),
     builder: (context, future) {
       if (!future.hasData) {
-        return CircularProgressIndicator();
+        return Center(
+          child: Container(
+            width: 100,
+            height: 100,
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.blue,
+            ),
+          ),
+        );
       }
       print("TEST DATA SUMMURY: RECORD count=${future.data.toString()}");
       return RecordListScreen(datetime: DateTime.now());

@@ -11,90 +11,99 @@ import 'model/Record.dart';
 
 void main() {
   initializeDateFormatting();
-  WidgetsFlutterBinding.ensureInitialized();
-  createTestData();
   runApp(App());
 }
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Study Record',
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: RecordListScreen(datetime: DateTime.now()), // TODO: dummy
+      home: createHomeForDevelopment(),
+      // home: RecordListScreen(datetime: DateTime.now()), // for production env.
     );
   }
 }
 
-void createTestData() async {
+Widget createHomeForDevelopment() {
+  return FutureBuilder<bool>(
+    future: inputTestData(),
+    builder: (context, future) {
+      if (!future.hasData) {
+        return CircularProgressIndicator();
+      }
+      return RecordListScreen(datetime: DateTime.now());
+    },
+  );
+}
+
+Future<bool> inputTestData() async {
+
   Database db = await DatabaseHelper.instance.getDatabase();
-  print(await db.rawQuery("select name from sqlite_master where type='table';"));
-  await db.execute("DELETE FROM RECORD")
-      .then((_) => db.execute('''
-      INSERT INTO RECORD(
-        id,
-        title,
-        kind,
-        iconCodePoint,
-        iconFontFamily,
-        fromDate,
-        toDate,
-        version
-      ) VALUES (
-        1,
-        "Ruby on Rails",
-        "Programming",
-        ${Icons.computer.codePoint},
-        "${Icons.computer.fontFamily}",
-        "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "0900"}",
-        "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1045"}",
-        0
-      );
-    '''))
-      .then((_) => RecordRepository.insert(Record(
-      id: 2,
-      title: 'Golang / go-gin',
-      kind: 'Programming',
-      iconCodePoint: Icons.computer.codePoint,
-      iconFontFamily: Icons.computer.fontFamily,
-      fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "0900",
-      toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1045",
-      version: 0
-  )))
-      .then((_) => RecordService.insert(Record(
-      id: 3,
-      title: '初めてのGraphQL',
-      kind: 'Reading',
-      iconCodePoint: Icons.book.codePoint,
-      iconFontFamily: Icons.book.fontFamily,
-      fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1245",
-      toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1515",
-      version: 0
-  )))
-      .then((_) => RecordService.insert(Record(
-      id: 4,
-      title: '仕事 (yesterday)',
-      kind: 'Test',
-      iconCodePoint: Icons.work.codePoint,
-      iconFontFamily: Icons.work.fontFamily,
-      fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: -1))) + "0900",
-      toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: -1))) + "1800",
-      version: 0
-  )))
-      .then((_) => RecordService.insert(Record(
-      id: 5,
-      title: '仕事 (tommorow)',
-      kind: 'Test',
-      iconCodePoint: Icons.work.codePoint,
-      iconFontFamily: Icons.work.fontFamily,
-      fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: 1))) + "0900",
-      toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: 1))) + "1800",
-      version: 0
-  )))
-      .catchError((e) => print(e))
-      .whenComplete(() => print('Initialized datas ...'));
+  await db.execute("DELETE FROM RECORD");
+  await db.execute('''
+    INSERT INTO RECORD(
+      id,
+      title,
+      kind,
+      iconCodePoint,
+      iconFontFamily,
+      fromDate,
+      toDate,
+      version
+    ) VALUES (
+      1,
+      "Ruby on Rails",
+      "Programming",
+      ${Icons.computer.codePoint},
+      "${Icons.computer.fontFamily}",
+      "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "0900"}",
+      "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1045"}",
+      0
+    );
+  ''');
+  await RecordRepository.insert(Record(
+    id: 2,
+    title: 'Golang / go-gin',
+    kind: 'Programming',
+    iconCodePoint: Icons.computer.codePoint,
+    iconFontFamily: Icons.computer.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "0900",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1045",
+    version: 0
+  ));
+  await RecordService.insert(Record(
+    id: 3,
+    title: '初めてのGraphQL',
+    kind: 'Reading',
+    iconCodePoint: Icons.book.codePoint,
+    iconFontFamily: Icons.book.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1245",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1515",
+    version: 0
+  ));
+  await RecordService.insert(Record(
+    id: 4,
+    title: '仕事 (yesterday)',
+    kind: 'Test',
+    iconCodePoint: Icons.work.codePoint,
+    iconFontFamily: Icons.work.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: -1))) + "0900",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: -1))) + "1800",
+    version: 0
+  ));
+  await RecordService.insert(Record(
+    id: 5,
+    title: '仕事 (tommorow)',
+    kind: 'Test',
+    iconCodePoint: Icons.work.codePoint,
+    iconFontFamily: Icons.work.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: 1))) + "0900",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: 1))) + "1800",
+    version: 0
+  ));
+  return true;
 }

@@ -2,15 +2,16 @@
 
 A study record application.
 
-## Getting Started
+# Library
 
-This project is a starting point for a Flutter application.
+- [sqflite](https://pub.dev/packages/sqflite) ... provide database / SQLite plugin
+- [table_calendar](https://pub.dev/packages/table_calendar) ... provide Calendar UI
+- [charts_flutter](https://pub.dev/packages/charts_flutter) ... create record summury chart
 
-A few resources to get you started if this is your first Flutter project:
+(Excerpt)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+# Image
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## Mock up (Design Phase)
+

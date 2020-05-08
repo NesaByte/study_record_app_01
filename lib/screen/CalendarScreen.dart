@@ -186,7 +186,7 @@ class _State extends State<CalendarScreen> {
 
   Widget _buildDayDetails(final double maxWidth, final double maxHeight) {
     final String dateKey = DateFormat('yyyyMMdd', "ja_JP").format(_selectedDate);
-    if (!_recordMap.containsKey(dateKey)) return Text('NODATA');
+    if (!_recordMap.containsKey(dateKey)) return Center(child: Text('NODATA'));
 
     final Map<IconData, double> summaryMap = _createSummaryMap(dateKey);
     if (_isChartMode) {

@@ -131,29 +131,40 @@ class _State extends State<CalendarScreen> {
           map[iconData] = 1;
         }
       });
-      List<Widget> _tableRowsHeader = <Widget>[];
-      List<Widget> _tableRowsData = <Widget>[];
+      List<TableRow> _tableRows = <TableRow>[
+        TableRow(
+          children: [
+            TableCell(
+              child: Center(child: Text('Icon')),
+              verticalAlignment: TableCellVerticalAlignment.middle,
+            ),
+            TableCell(
+              child: Center(child: Text('Count')),
+              verticalAlignment: TableCellVerticalAlignment.middle,
+            )
+          ]
+        )
+      ];
       map.forEach((key, value) {
-        _tableRowsHeader.add(
-          TableCell(
-            child: Center(child: Icon(key)),
-            verticalAlignment: TableCellVerticalAlignment.middle,
-          )
-        );
-        _tableRowsData.add(
-          TableCell(
-            child: Center(child: Text(value.toString())),
-            verticalAlignment: TableCellVerticalAlignment.middle,
+        _tableRows.add(
+          TableRow(
+            children: [
+              TableCell(
+                child: Center(child: Icon(key)),
+                verticalAlignment: TableCellVerticalAlignment.middle,
+              ),
+              TableCell(
+                child: Center(child: Text(value.toString())),
+                verticalAlignment: TableCellVerticalAlignment.middle,
+              )
+            ]
           )
         );
       });
       _children.add(
         Table(
           border: TableBorder.all(color: Colors.grey, width: 1, style: BorderStyle.none),
-          children: [
-            TableRow(children: _tableRowsHeader),
-            TableRow(children: _tableRowsData)
-          ],
+          children: _tableRows
         )
       );
     } else {

@@ -22,26 +22,26 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: createHomeForDevelopment(),
+      home: createHomeForDevelopment(), // for development env.
       // home: RecordListScreen(datetime: DateTime.now()), // for production env.
     );
   }
 }
 
 Widget createHomeForDevelopment() {
-  return FutureBuilder<bool>(
-    future: inputTestData(),
+  return FutureBuilder<int>(
+    future: resetTestData(),
     builder: (context, future) {
       if (!future.hasData) {
         return CircularProgressIndicator();
       }
+      print("TEST DATA SUMMURY: RECORD count=${future.data.toString()}");
       return RecordListScreen(datetime: DateTime.now());
     },
   );
 }
 
-Future<bool> inputTestData() async {
-
+Future<int> resetTestData() async {
   Database db = await DatabaseHelper.instance.getDatabase();
   await db.execute("DELETE FROM RECORD");
   await db.execute('''
@@ -105,5 +105,5 @@ Future<bool> inputTestData() async {
     toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: 1))) + "1800",
     version: 0
   ));
-  return true;
+  return DatabaseHelper.instance.countAllRows("RECORD");
 }

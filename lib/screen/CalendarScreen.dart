@@ -247,7 +247,7 @@ class HorizontalBarChart extends StatelessWidget {
 
   static List<charts.Series<RecordSummary, String>> _createData(final Map<IconData, double> map) {
     List<RecordSummary> data = [];
-    map.forEach((key, value) => data.add(RecordSummary(key.toString(), value, Colors.black))); // dummy color setting
+    map.forEach((key, value) => data.add(RecordSummary(key.toString(), value, Color.fromARGB(min(255, (255 / 10 * value).floor()), 0, 0, 255)))); // dummy color setting
     return [
       new charts.Series<RecordSummary, String>(
         id: 'Hours',

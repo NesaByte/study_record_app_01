@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:study_record_app_01/Constants.dart';
 import 'package:study_record_app_01/model/Record.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -134,6 +135,7 @@ class _State extends State<CalendarScreen> {
 
   Map<IconData, double> _createSummaryMap(final String dateKey) {
     Map<IconData, double> summaryMap = {};
+    Constants.availableIcons.forEach((key, value) => summaryMap[key] = 0.0);
     _recordMap[dateKey].forEach((element) {
       IconData iconData = IconData(element.iconCodePoint, fontFamily: element.iconFontFamily);
       if (summaryMap.containsKey(iconData)) {
@@ -253,7 +255,9 @@ class HorizontalBarChart extends StatelessWidget {
 
   static List<charts.Series<RecordSummary, String>> _createData(final Map<IconData, double> map) {
     List<RecordSummary> data = [];
-    map.forEach((key, value) => data.add(RecordSummary(key.toString(), value, Color.fromARGB(min(255, (255 / 10 * value).floor()), 0, 0, 255)))); // dummy color setting
+    map.forEach((key, value) => data.add(
+      RecordSummary(Constants.availableIcons[key], value, Color.fromARGB(min(255, (255 / 10 * value).floor()), 0, 0, 255)))
+    ); // dummy color setting
     return [
       new charts.Series<RecordSummary, String>(
         id: 'Hours',

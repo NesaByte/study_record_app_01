@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:study_record_app_01/model/Record.dart';
+import 'package:study_record_app_01/screen/CalendarScreen.dart';
 import 'package:study_record_app_01/screen/RegisterRecordScreen.dart';
 import 'package:study_record_app_01/screen/UpdateRecordScreen.dart';
 import 'package:study_record_app_01/service/RecordService.dart';
@@ -12,6 +13,7 @@ class RecordListScreen extends StatefulWidget {
   final DateTime datetime;
   static final navigateToTodayRecordListScreenKey = Key('navigateToTodayRecordListScreenKey');
   static final navigateToRegisterRecordScreenKey = Key('navigateToRegisterRecordScreenKey');
+  static final navigateToCalendarScreenKey = Key('navigateToCalendarScreenKey');
   static final navigateToYesterdayRecordListScreenKey = Key('navigateToYesterdayRecordListScreenKey');
   static final navigateToTomorrowRecordListScreenKey = Key('navigateToTomorrowRecordListScreenKey');
 
@@ -28,6 +30,11 @@ class _State extends State<RecordListScreen> {
 
   void _navigateToRegisterRecordScreen(final BuildContext context, final DateTime datetime) {
     final route = MaterialPageRoute(builder: (context) => RegisterRecordScreen(initialDate: DateFormat('yyyyMMdd', "ja_JP").format(datetime)));
+    Navigator.of(context).push(route);
+  }
+
+  void _navigateToCalendarScreen(final BuildContext context) {
+    final route = MaterialPageRoute(builder: (context) => CalendarScreen());
     Navigator.of(context).push(route);
   }
 
@@ -61,6 +68,13 @@ class _State extends State<RecordListScreen> {
           tooltip: 'Register',
           child: Icon(Icons.add),
           onPressed: () => _navigateToRegisterRecordScreen(context, widget.datetime),
+        ),
+        FloatingActionButton(
+          key: RecordListScreen.navigateToCalendarScreenKey,
+          heroTag: 'calendar',
+          tooltip: 'Calendar',
+          child: Icon(Icons.calendar_today),
+          onPressed: () => _navigateToCalendarScreen(context),
         ),
         FloatingActionButton(
           key: RecordListScreen.navigateToTodayRecordListScreenKey,

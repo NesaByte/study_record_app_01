@@ -68,8 +68,8 @@ Future<int> resetTestData() async {
       "Programming",
       ${Icons.computer.codePoint},
       "${Icons.computer.fontFamily}",
-      "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "0900"}",
-      "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1045"}",
+      "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "0930"}",
+      "${DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1100"}",
       0
     );
   ''');
@@ -79,8 +79,8 @@ Future<int> resetTestData() async {
     kind: 'Programming',
     iconCodePoint: Icons.computer.codePoint,
     iconFontFamily: Icons.computer.fontFamily,
-    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "0900",
-    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1045",
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1115",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1200",
     version: 0
   ));
   await RecordService.insert(Record(
@@ -89,12 +89,102 @@ Future<int> resetTestData() async {
     kind: 'Reading',
     iconCodePoint: Icons.book.codePoint,
     iconFontFamily: Icons.book.fontFamily,
-    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1245",
-    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1515",
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1215",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1245",
     version: 0
   ));
   await RecordService.insert(Record(
     id: 4,
+    title: '昼ごはん',
+    kind: 'Break',
+    iconCodePoint: Icons.free_breakfast.codePoint,
+    iconFontFamily: Icons.free_breakfast.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1300",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1345",
+    version: 0
+  ));
+  await RecordService.insert(Record(
+    id: 5,
+    title: '仕事 / 執筆',
+    kind: 'Work',
+    iconCodePoint: Icons.work.codePoint,
+    iconFontFamily: Icons.work.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1400",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1615",
+    version: 0
+  ));
+  await RecordRepository.insert(Record(
+    id: 6,
+    title: 'Golang / go-gin',
+    kind: 'Programming',
+    iconCodePoint: Icons.computer.codePoint,
+    iconFontFamily: Icons.computer.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1615",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1730",
+    version: 0
+  ));
+  await RecordRepository.insert(Record(
+    id: 7,
+    title: '仕事 / WEB制作',
+    kind: 'Work',
+    iconCodePoint: Icons.computer.codePoint,
+    iconFontFamily: Icons.computer.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1730",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1815",
+    version: 0
+  ));
+  await RecordService.insert(Record(
+    id: 8,
+    title: '夕ご飯',
+    kind: 'Break',
+    iconCodePoint: Icons.free_breakfast.codePoint,
+    iconFontFamily: Icons.free_breakfast.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1815",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1930",
+    version: 0
+  ));
+  await RecordService.insert(Record(
+    id: 9,
+    title: '休憩(風呂&家事&映画)',
+    kind: 'Break',
+    iconCodePoint: Icons.free_breakfast.codePoint,
+    iconFontFamily: Icons.free_breakfast.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1945",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "2115",
+    version: 0
+  ));
+  await RecordService.insert(Record(
+    id: 10,
+    title: 'エクストリームプログラミング',
+    kind: 'Reading',
+    iconCodePoint: Icons.book.codePoint,
+    iconFontFamily: Icons.book.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "2130",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "2145",
+    version: 0
+  ));
+  await RecordService.insert(Record(
+    id: 11,
+    title: 'テスト駆動開発',
+    kind: 'Reading',
+    iconCodePoint: Icons.book.codePoint,
+    iconFontFamily: Icons.book.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "2145",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "2215",
+    version: 0
+  ));
+  await RecordService.insert(Record(
+    id: 12,
+    title: 'Dart / Flutter',
+    kind: 'Programming',
+    iconCodePoint: Icons.computer.codePoint,
+    iconFontFamily: Icons.computer.fontFamily,
+    fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "2215",
+    toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "2300",
+    version: 0
+  ));
+  await RecordService.insert(Record(
+    id: 13,
     title: '仕事 (yesterday)',
     kind: 'Test',
     iconCodePoint: Icons.work.codePoint,
@@ -104,7 +194,7 @@ Future<int> resetTestData() async {
     version: 0
   ));
   await RecordService.insert(Record(
-    id: 5,
+    id: 14,
     title: '仕事 (tommorow)',
     kind: 'Test',
     iconCodePoint: Icons.work.codePoint,

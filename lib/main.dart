@@ -9,13 +9,16 @@ import 'package:study_record_app_01/service/RecordService.dart';
 
 import 'model/Record.dart';
 
-void main() => runApp(App());
+void main() {
+  initializeDateFormatting();
+  WidgetsFlutterBinding.ensureInitialized();
+  createTestData();
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting();
-    createTestData();
 
     return MaterialApp(
       title: 'Study Record',
@@ -25,12 +28,12 @@ class App extends StatelessWidget {
       home: RecordListScreen(datetime: DateTime.now()), // TODO: dummy
     );
   }
+}
 
-  // for test
-  void createTestData() async {
-    Database db = await DatabaseHelper.instance.getDatabase();
-    print(await db.rawQuery("select name from sqlite_master where type='table';"));
-    await db.execute("DELETE FROM RECORD")
+void createTestData() async {
+  Database db = await DatabaseHelper.instance.getDatabase();
+  print(await db.rawQuery("select name from sqlite_master where type='table';"));
+  await db.execute("DELETE FROM RECORD")
       .then((_) => db.execute('''
       INSERT INTO RECORD(
         id,
@@ -53,46 +56,45 @@ class App extends StatelessWidget {
       );
     '''))
       .then((_) => RecordRepository.insert(Record(
-        id: 2,
-        title: 'Golang / go-gin',
-        kind: 'Programming',
-        iconCodePoint: Icons.computer.codePoint,
-        iconFontFamily: Icons.computer.fontFamily,
-        fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "0900",
-        toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1045",
-        version: 0
-    )))
+      id: 2,
+      title: 'Golang / go-gin',
+      kind: 'Programming',
+      iconCodePoint: Icons.computer.codePoint,
+      iconFontFamily: Icons.computer.fontFamily,
+      fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "0900",
+      toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1045",
+      version: 0
+  )))
       .then((_) => RecordService.insert(Record(
-        id: 3,
-        title: '初めてのGraphQL',
-        kind: 'Reading',
-        iconCodePoint: Icons.book.codePoint,
-        iconFontFamily: Icons.book.fontFamily,
-        fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1245",
-        toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1515",
-        version: 0
-    )))
+      id: 3,
+      title: '初めてのGraphQL',
+      kind: 'Reading',
+      iconCodePoint: Icons.book.codePoint,
+      iconFontFamily: Icons.book.fontFamily,
+      fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1245",
+      toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now()) + "1515",
+      version: 0
+  )))
       .then((_) => RecordService.insert(Record(
-        id: 4,
-        title: '仕事 (yesterday)',
-        kind: 'Test',
-        iconCodePoint: Icons.work.codePoint,
-        iconFontFamily: Icons.work.fontFamily,
-        fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: -1))) + "0900",
-        toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: -1))) + "1800",
-        version: 0
-    )))
+      id: 4,
+      title: '仕事 (yesterday)',
+      kind: 'Test',
+      iconCodePoint: Icons.work.codePoint,
+      iconFontFamily: Icons.work.fontFamily,
+      fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: -1))) + "0900",
+      toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: -1))) + "1800",
+      version: 0
+  )))
       .then((_) => RecordService.insert(Record(
-        id: 5,
-        title: '仕事 (tommorow)',
-        kind: 'Test',
-        iconCodePoint: Icons.work.codePoint,
-        iconFontFamily: Icons.work.fontFamily,
-        fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: 1))) + "0900",
-        toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: 1))) + "1800",
-        version: 0
-    )))
+      id: 5,
+      title: '仕事 (tommorow)',
+      kind: 'Test',
+      iconCodePoint: Icons.work.codePoint,
+      iconFontFamily: Icons.work.fontFamily,
+      fromDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: 1))) + "0900",
+      toDate: DateFormat('yyyyMMdd', "ja_JP").format(DateTime.now().add(Duration(days: 1))) + "1800",
+      version: 0
+  )))
       .catchError((e) => print(e))
       .whenComplete(() => print('Initialized datas ...'));
-  }
 }

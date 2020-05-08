@@ -184,7 +184,7 @@ class _State extends State<CalendarScreen> {
 
   Widget _buildDayDetails(final double maxWidth, final double maxHeight) {
     final String dateKey = DateFormat('yyyyMMdd', "ja_JP").format(_selectedDate);
-    if (!_recordMap.containsKey(dateKey)) return _wrapCommonContainer(Text('NODATA'));
+    if (!_recordMap.containsKey(dateKey)) return Text('NODATA');
 
     final Map<IconData, double> summaryMap = _createSummaryMap(dateKey);
     if (_isChartMode) {
@@ -192,6 +192,14 @@ class _State extends State<CalendarScreen> {
     } else {
       return _buildDayDetailsBody(summaryMap);
     }
+  }
+
+  Widget _buildChangeModeButton() {
+    return RaisedButton.icon(
+      icon: Icon(Icons.compare_arrows),
+      label: Text('Change Mode'),
+      onPressed: () => setState(() => _isChartMode = !_isChartMode),
+    );
   }
 
   Widget _wrapCommonContainer(final Widget _widget) => Container(
@@ -211,23 +219,18 @@ class _State extends State<CalendarScreen> {
             SizedBox(
               width: size.width,
               height: size.height * 0.5,
-              child: _buildTableCalendar(),
-            ),
-            SizedBox(
-              width: size.width,
-              height: size.height * 0.05,
-              child: _wrapCommonContainer(
-                RaisedButton(
-                  child: Icon(Icons.compare_arrows),
-                  onPressed: () => setState(() => _isChartMode = !_isChartMode),
-                ),
-              )
+              child: _wrapCommonContainer(_buildTableCalendar()),
             ),
             SizedBox(
               width: size.width,
               height: size.height * 0.3,
-              child: _buildDayDetails(size.width, size.height * 0.3)
-            )
+              child: _wrapCommonContainer(_buildDayDetails(size.width, size.height * 0.3))
+            ),
+            SizedBox(
+              width: size.width,
+              height: size.height * 0.05,
+              child: _wrapCommonContainer(_buildChangeModeButton())
+            ),
           ],
         )
       ),

@@ -247,17 +247,13 @@ class HorizontalBarChart extends StatelessWidget {
 
   static List<charts.Series<RecordSummary, String>> _createData(final Map<IconData, double> map) {
     List<RecordSummary> data = [];
-    map.forEach((key, value) => data.add(RecordSummary(key.toString(), value, Color.fromARGB(min(255, (25.5 * value).floor()), 0, 0, 255))));
-    // data.add(RecordSummary("computer", 5.5, Colors.blue));
-    // data.add(RecordSummary("book", 3.5, Colors.blue));
-    // data.add(RecordSummary("break", 3.75, Colors.blue));
-    // data.add(RecordSummary("work", 4.25, Colors.blue));
-
+    map.forEach((key, value) => data.add(RecordSummary(key.toString(), value, Colors.black))); // dummy color setting
     return [
       new charts.Series<RecordSummary, String>(
         id: 'Hours',
         domainFn: (RecordSummary sum, _) => sum.name,
         measureFn: (RecordSummary sum, _) => sum.hours,
+        colorFn: (RecordSummary sum, _) => sum.color,
         data: data,
       )
     ];
@@ -265,7 +261,6 @@ class HorizontalBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // For horizontal bar charts, set the [vertical] flag to false.
     return new charts.BarChart(
       seriesList,
       animate: animate,

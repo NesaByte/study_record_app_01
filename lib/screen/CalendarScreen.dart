@@ -43,6 +43,7 @@ class CalendarScreen extends StatefulWidget {
 class _State extends State<CalendarScreen> {
   CalendarController _calendarController;
   DateTime _selectedDate;
+  bool _isChartMode;
   Map<DateTime, List> _events;
   Map<String, List<Record>> _recordMap;
 
@@ -51,6 +52,7 @@ class _State extends State<CalendarScreen> {
     super.initState();
     _calendarController = CalendarController();
     _selectedDate = DateTime.now();
+    _isChartMode = false;
     _events = _createEvents(widget.recordList);
     _recordMap = _convertMap(widget.recordList);
   }
@@ -185,20 +187,11 @@ class _State extends State<CalendarScreen> {
     if (!_recordMap.containsKey(dateKey)) return _wrapCommonContainer(Text('NODATA'));
 
     final Map<IconData, double> summaryMap = _createSummaryMap(dateKey);
-    return Column(
-      children: <Widget>[
-        SizedBox(
-          width: maxWidth,
-          height: maxHeight * 0.5,
-          child: _buildDayDetailsBody(summaryMap)
-        ),
-        SizedBox(
-          width: maxWidth,
-          height: maxHeight * 0.5,
-          child: HorizontalBarChart.fromSummaryMap(summaryMap)
-        ),
-      ],
-    );
+    if (_isChartMode) {
+      return HorizontalBarChart.fromSummaryMap(summaryMap);
+    } else {
+      return _buildDayDetailsBody(summaryMap);
+    }
   }
 
   Widget _wrapCommonContainer(final Widget _widget) => Container(
@@ -219,6 +212,16 @@ class _State extends State<CalendarScreen> {
               width: size.width,
               height: size.height * 0.5,
               child: _buildTableCalendar(),
+            ),
+            SizedBox(
+              width: size.width,
+              height: size.height * 0.05,
+              child: _wrapCommonContainer(
+                RaisedButton(
+                  child: Icon(Icons.compare_arrows),
+                  onPressed: () => setState(() => _isChartMode = !_isChartMode),
+                ),
+              )
             ),
             SizedBox(
               width: size.width,

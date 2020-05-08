@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:study_record_app_01/model/Record.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'RecordListScreen.dart';
 
@@ -115,7 +118,7 @@ class _State extends State<CalendarScreen> {
       Text(
         DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(_selectedDate),
         style: TextStyle(
-            fontSize: 18.0
+          fontSize: 18.0
         ),
       )
     );
@@ -127,7 +130,7 @@ class _State extends State<CalendarScreen> {
     return (elaspedHour + (elaspedMinute / 60)).toDouble();
   }
 
-  Widget _buildDayDetailsBody(final String dateKey) {
+  Map<IconData, double> _createSummaryMap(final String dateKey) {
     Map<IconData, double> summaryMap = {};
     _recordMap[dateKey].forEach((element) {
       IconData iconData = IconData(element.iconCodePoint, fontFamily: element.iconFontFamily);
@@ -137,6 +140,10 @@ class _State extends State<CalendarScreen> {
         summaryMap[iconData] = _calcElaspedTime(element.fromDate, element.toDate);
       }
     });
+    return summaryMap;
+  }
+
+  Widget _buildDayDetailsBody(final Map<IconData, double> summaryMap) {
     List<TableRow> _tableRows = <TableRow>[
       TableRow(
         children: [
@@ -178,7 +185,9 @@ class _State extends State<CalendarScreen> {
     final String dateKey = DateFormat('yyyyMMdd', "ja_JP").format(_selectedDate);
     _children.add(_buildDayDetailsHeader());
     if (_recordMap.containsKey(dateKey)) {
-      _children.add(_buildDayDetailsBody(dateKey));
+      final Map<IconData, double> summaryMap = _createSummaryMap(dateKey);
+      _children.add(_buildDayDetailsBody(summaryMap));
+      // _children.add(HorizontalBarChart.fromSummaryMap(summaryMap));
     } else {
       _children.add(_wrapCommonContainer(Text('NODATA')));
     }
@@ -204,4 +213,51 @@ class _State extends State<CalendarScreen> {
       ),
     );
   }
+}
+
+class HorizontalBarChart extends StatelessWidget {
+  final List<charts.Series> seriesList;
+  final bool animate;
+
+  HorizontalBarChart(this.seriesList, {this.animate});
+
+  factory HorizontalBarChart.fromSummaryMap(final Map<IconData, double> map) {
+    return new HorizontalBarChart(
+      _createData(map),
+      animate: true,
+    );
+  }
+
+  static List<charts.Series<RecordSummary, String>> _createData(final Map<IconData, double> map) {
+    List<RecordSummary> data = [];
+    map.forEach((key, value) => data.add(RecordSummary(key.toString(), value, Color.fromARGB(min(255, (25.5 * value).floor()), 0, 0, 255))));
+    return [
+      new charts.Series<RecordSummary, String>(
+        id: 'Hours',
+        domainFn: (RecordSummary sum, _) => sum.name,
+        measureFn: (RecordSummary sum, _) => sum.hours,
+        data: data,
+      )
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // For horizontal bar charts, set the [vertical] flag to false.
+    return new charts.BarChart(
+      seriesList,
+      animate: animate,
+      vertical: false,
+    );
+  }
+}
+
+class RecordSummary {
+  final String name;
+  final double hours;
+  final charts.Color color;
+
+  RecordSummary(this.name, this.hours, Color color)
+      : this.color = new charts.Color(
+      r: color.red, g: color.green, b: color.blue, a: color.alpha);
 }

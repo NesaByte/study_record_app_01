@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:study_record_app_01/model/Record.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -25,18 +26,7 @@ final Map<DateTime, List> _holidays = {
   DateTime(2020, 11, 23): ['勤労感謝の日'],
 };
 
-Map<DateTime, List> _createEvents(final List<Record> recordList) {
-  Map<DateTime, List> results = {};
-  recordList.forEach((element) {
-    DateTime key = DateTime.parse(element.fromDate.substring(0, 8));
-    if (results.containsKey(key)) {
-      results[key].add(element.title);
-    } else {
-      results[key] = [element.title];
-    }
-  });
-  return results;
-}
+
 
 class CalendarScreen extends StatefulWidget {
 
@@ -49,13 +39,17 @@ class CalendarScreen extends StatefulWidget {
 
 class _State extends State<CalendarScreen> {
   CalendarController _calendarController;
+  DateTime _selectedDate;
   Map<DateTime, List> _events;
+  Map<String, List<Record>> _recordMap;
 
   @override
   void initState() {
     super.initState();
     _calendarController = CalendarController();
+    _selectedDate = DateTime.now();
     _events = _createEvents(widget.recordList);
+    _recordMap = _convertMap(widget.recordList);
   }
 
   @override
@@ -64,12 +58,45 @@ class _State extends State<CalendarScreen> {
     super.dispose();
   }
 
+  Map<DateTime, List> _createEvents(final List<Record> recordList) {
+    Map<DateTime, List> results = {};
+    recordList.forEach((element) {
+      DateTime key = DateTime.parse(element.fromDate.substring(0, 8));
+      if (results.containsKey(key)) {
+        results[key].add(element.title);
+      } else {
+        results[key] = [element.title];
+      }
+    });
+    return results;
+  }
+
+  Map<String, List<Record>> _convertMap(final List<Record> recordList) {
+    Map<String, List<Record>> results = {};
+    recordList.forEach((element) {
+      String key = element.fromDate.substring(0, 8);
+      if (results.containsKey(key)) {
+        results[key].add(element);
+      } else {
+        results[key] = [element];
+      }
+    });
+    return results;
+  }
+
   void _navigateToRecordListScreen(final BuildContext context, final DateTime datetime) {
     final route = MaterialPageRoute(builder: (context) => RecordListScreen(datetime: datetime));
     Navigator.of(context).push(route);
   }
 
   void _onDaySelected(DateTime day, List events) {
+    setState(() {
+      _selectedDate = day;
+    });
+    print(_selectedDate);
+  }
+
+  void _onDayLongPressed(DateTime day, List events) {
     _navigateToRecordListScreen(context, day);
   }
 
@@ -79,15 +106,80 @@ class _State extends State<CalendarScreen> {
       calendarController: _calendarController,
       events: _events,
       holidays: _holidays,
-      onDayLongPressed: (day, events) => _onDaySelected(day, events),
+      onDaySelected: (day, events) => _onDaySelected(day, events),
+      onDayLongPressed: (day, events) => _onDayLongPressed(day, events),
     );
   }
+
+  Widget _buildDayDetails() {
+    List<Widget> _children = <Widget>[];
+    String dateKey = DateFormat('yyyyMMdd', "ja_JP").format(_selectedDate);
+    _children.add(_wrapCommonContainer(
+        Text(
+          DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(_selectedDate),
+          style: TextStyle(
+            fontSize: 18.0
+          ),
+        )
+    ));
+    if (_recordMap.containsKey(dateKey)) {
+      Map<IconData, int> map = {};
+      _recordMap[dateKey].forEach((element) {
+        IconData iconData = IconData(element.iconCodePoint, fontFamily: element.iconFontFamily);
+        if (map.containsKey(iconData)) {
+          map[iconData]++;
+        } else {
+          map[iconData] = 1;
+        }
+      });
+      List<Widget> _tableRowsHeader = <Widget>[];
+      List<Widget> _tableRowsData = <Widget>[];
+      map.forEach((key, value) {
+        _tableRowsHeader.add(
+          TableCell(
+            child: Center(child: Icon(key)),
+            verticalAlignment: TableCellVerticalAlignment.middle,
+          )
+        );
+        _tableRowsData.add(
+          TableCell(
+            child: Center(child: Text(value.toString())),
+            verticalAlignment: TableCellVerticalAlignment.middle,
+          )
+        );
+      });
+      _children.add(
+        Table(
+          border: TableBorder.all(color: Colors.grey, width: 1, style: BorderStyle.none),
+          children: [
+            TableRow(children: _tableRowsHeader),
+            TableRow(children: _tableRowsData)
+          ],
+        )
+      );
+    } else {
+      _children.add(_wrapCommonContainer(Text('NODATA')));
+    }
+    return Column(
+      children: _children,
+    );
+  }
+
+  Widget _wrapCommonContainer(final Widget _widget) => Container(
+    padding: EdgeInsets.all(8.0),
+    child: _widget,
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: _buildTableCalendar(),
+      body: Column(
+        children: <Widget>[
+          _buildTableCalendar(),
+          _buildDayDetails(),
+        ],
+      ),
     );
   }
 }

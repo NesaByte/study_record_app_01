@@ -143,7 +143,7 @@ class _RecordListState extends State<_RecordList> {
   String createFormattedElaspedTime(final String fromDate, final String toDate) {
     int elaspedHour = int.parse(toDate.substring(8, 10)) - int.parse(fromDate.substring(8, 10));
     int elaspedMinute = int.parse(toDate.substring(10, 12)) - int.parse(fromDate.substring(10, 12));
-    return (elaspedHour + (elaspedMinute / 60)).toStringAsPrecision(3) + "h";
+    return (elaspedHour + (elaspedMinute / 60)).toStringAsFixed(2) + "h";
   }
 
   Widget _buildRecordComponent(final Record _record) {

@@ -121,14 +121,20 @@ class _State extends State<CalendarScreen> {
     );
   }
 
+  double _calcElaspedTime(final String fromDate, final String toDate) {
+    int elaspedHour = int.parse(toDate.substring(8, 10)) - int.parse(fromDate.substring(8, 10));
+    int elaspedMinute = int.parse(toDate.substring(10, 12)) - int.parse(fromDate.substring(10, 12));
+    return (elaspedHour + (elaspedMinute / 60)).toDouble();
+  }
+
   Widget _buildDayDetailsBody(final String dateKey) {
-    Map<IconData, int> map = {};
+    Map<IconData, double> summaryMap = {};
     _recordMap[dateKey].forEach((element) {
       IconData iconData = IconData(element.iconCodePoint, fontFamily: element.iconFontFamily);
-      if (map.containsKey(iconData)) {
-        map[iconData]++;
+      if (summaryMap.containsKey(iconData)) {
+        summaryMap[iconData] += _calcElaspedTime(element.fromDate, element.toDate);
       } else {
-        map[iconData] = 1;
+        summaryMap[iconData] = _calcElaspedTime(element.fromDate, element.toDate);
       }
     });
     List<TableRow> _tableRows = <TableRow>[
@@ -139,13 +145,13 @@ class _State extends State<CalendarScreen> {
             verticalAlignment: TableCellVerticalAlignment.middle,
           ),
           TableCell(
-            child: Center(child: Text('Count')),
+            child: Center(child: Text('Sum')),
             verticalAlignment: TableCellVerticalAlignment.middle,
           )
         ]
       )
     ];
-    map.forEach((key, value) {
+    summaryMap.forEach((key, value) {
       _tableRows.add(
         TableRow(
           children: [
@@ -154,7 +160,7 @@ class _State extends State<CalendarScreen> {
               verticalAlignment: TableCellVerticalAlignment.middle,
             ),
             TableCell(
-              child: Center(child: Text(value.toString())),
+              child: Center(child: Text("${value.toStringAsFixed(2)}h")),
               verticalAlignment: TableCellVerticalAlignment.middle,
             )
           ]

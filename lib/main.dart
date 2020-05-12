@@ -22,8 +22,8 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: createHomeForDevelopment(), // for development env.
-      // home: RecordListScreen(datetime: DateTime.now()), // for production env.
+      // home: createHomeForDevelopment(), // for development env.
+      home: RecordListScreen(datetime: DateTime.now()), // for production env.
     );
   }
 }

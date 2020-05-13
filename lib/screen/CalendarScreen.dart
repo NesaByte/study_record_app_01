@@ -116,17 +116,6 @@ class _State extends State<CalendarScreen> {
     );
   }
 
-  Widget _buildDayDetailsHeader() {
-    return _wrapCommonContainer(
-      Text(
-        DateFormat('yyyy/MM/dd EEEE', "ja_JP").format(_selectedDate),
-        style: TextStyle(
-          fontSize: 18.0
-        ),
-      )
-    );
-  }
-
   double _calcElaspedTime(final String fromDate, final String toDate) {
     int elaspedHour = int.parse(toDate.substring(8, 10)) - int.parse(fromDate.substring(8, 10));
     int elaspedMinute = int.parse(toDate.substring(10, 12)) - int.parse(fromDate.substring(10, 12));

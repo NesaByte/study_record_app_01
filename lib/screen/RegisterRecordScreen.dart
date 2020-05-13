@@ -232,39 +232,6 @@ class _State extends State<RegisterRecordScreen> {
     child: _widget,
   );
 
-
-  Widget _buildTestButton() {
-    void _submit() async {
-      _formKey.currentState.save();
-      final int recentId = (await RecordService.selectAll()).length;
-      final dto = Record(
-        id: recentId + 1,
-        title: 'PC購入',
-        kind: 'Shopping',
-        iconCodePoint: Icons.free_breakfast.codePoint,
-        iconFontFamily: Icons.free_breakfast.fontFamily,
-        fromDate: _fromDate + '1445',
-        toDate: _toDate + '1630',
-        version: 1
-      );
-      await RecordService.insert(dto)
-        .then((value) {
-          Navigator.pop(context);
-        }).catchError((e) {
-          print(e);
-        });
-    }
-
-    return RaisedButton(
-        child: Text('TEST'),
-        color: Colors.grey,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        onPressed: _submit
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -292,9 +259,6 @@ class _State extends State<RegisterRecordScreen> {
                 )),
                 Center(
                   child: _wrapCommonContainer(_buildSubmitButton())
-                ),
-                Center(
-                  child: _wrapCommonContainer(_buildTestButton())
                 ),
               ]
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_record_app_01/Constants.dart';
 import 'package:study_record_app_01/component/SelectIconRadioFormField.dart';
 import 'package:study_record_app_01/model/Record.dart';
 import 'package:study_record_app_01/service/RecordService.dart';
@@ -18,12 +19,7 @@ class RegisterRecordScreen extends StatefulWidget {
 class _State extends State<RegisterRecordScreen> {
 
   final _formKey = new GlobalKey<FormState>();
-  final _choice = [
-    Icons.computer,
-    Icons.book,
-    Icons.work,
-    Icons.free_breakfast
-  ];
+  final _choice = Constants.availableIcons.keys.toList();
 
   String _fromDate;
   String _fromTime;

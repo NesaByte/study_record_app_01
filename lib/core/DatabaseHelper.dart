@@ -56,6 +56,11 @@ class DatabaseHelper {
     return await db.query(table);
   }
 
+  Future<List<Map<String, dynamic>>> selectAllRowsOrderBySpecified(final String table, final String sortColumn) async {
+    final Database db = await instance.getDatabase();
+    return await db.query(table, orderBy: sortColumn);
+  }
+
   Future<Map<String, dynamic>> selectOneRow(final String primaryKeyName, final String primaryKeyValue, final String table) async {
     final Database db = await instance.getDatabase();
     final List result = await db.query(table, where: '$primaryKeyName = ?', whereArgs: [primaryKeyValue]);

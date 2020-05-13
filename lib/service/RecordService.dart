@@ -27,9 +27,13 @@ class RecordService {
     return RecordRepository.selectAll();
   }
 
+  static Future<List<Record>> selectAllSortedByFromDate() async {
+    return RecordRepository.selectAllSortedByFromDate();
+  }
+
   static Future<List<Record>> selectFixedFromDateRecords(final int basisDate) async {
     List<Record> result = [];
-    final List<Record> dtos = await selectAll();
+    final List<Record> dtos = await selectAllSortedByFromDate();
     dtos.forEach((dto) {
       if (isIncludeSpecifiedDate(basisDate, dto)) result.add(dto);
     });

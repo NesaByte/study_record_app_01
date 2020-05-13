@@ -6,6 +6,7 @@ import 'package:study_record_app_01/model/Record.dart';
 class RecordRepository {
   static final _tableName = 'RECORD';
   static final _primaryKeyName = 'id';
+  static final _orderByColumn = 'fromDate';
   static DatabaseHelper dbHelper = DatabaseHelper.instance;
 
   static Future<List<Record>> selectAll() async {
@@ -14,6 +15,14 @@ class RecordRepository {
     rows.forEach((row) => dtos.add(Record.fromJson(row)));
     return dtos;
   }
+
+  static Future<List<Record>> selectAllSortedByFromDate() async {
+    final List<Map<String, dynamic>> rows = await dbHelper.selectAllRowsOrderBySpecified(_tableName, _orderByColumn);
+    List<Record> dtos = [];
+    rows.forEach((row) => dtos.add(Record.fromJson(row)));
+    return dtos;
+  }
+
 
   static Future<Record> selectOne(final int id) async {
     final Map<String, dynamic> row = await dbHelper.selectOneRow(
